@@ -12,8 +12,12 @@ import {
 import {
   ListeAbonnementsComponent
 } from "./BackOffice/Gestion_Abonnements/liste-abonnements/liste-abonnements.component";
+import {CalendarComponent} from "./BackOffice/Gestion_Planning/calendar/calendar.component";
+import {SignupComponent} from "./BackOffice/signup/signup/signup.component";
 
 const routes: Routes = [
+  { path: 'signup', component: SignupComponent },
+  { path: '', redirectTo: '/signup', pathMatch: 'full' },
   { path: 'Dashboard', component: ListeStatistiquesComponent },
   { path: 'Liste-Client', component: ListeClientComponent },
   { path: 'Liste-Coaches', component: ListeCoachsComponent },

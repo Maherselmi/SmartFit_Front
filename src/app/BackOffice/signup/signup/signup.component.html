@@ -1,0 +1,49 @@
+<div class="signup-container">
+  <div class="tabs">
+    <button [class.active]="selectedTab === 'coach'" (click)="selectedTab = 'coach'">
+      Espace Coachs
+    </button>
+    <button [class.active]="selectedTab === 'client'" (click)="selectedTab = 'client'">
+      Espace Clients
+    </button>
+  </div>
+
+  <div class="content">
+    <!-- Section gauche -->
+    <div class="left-section">
+      <!-- Image dynamique -->
+      <img
+        [src]="selectedTab === 'coach' ? 'assets/BackOffice/images/coach.jpg' : 'assets/BackOffice/images/client.jpg'"
+        alt="Smart Fit"
+      />
+      <h2>SMART FIT</h2>
+      <p>Atteignez vos objectifs avec un accompagnement personnalisé.</p>
+    </div>
+
+    <!-- Formulaire Coach -->
+    <div class="right-section" *ngIf="selectedTab === 'coach'">
+      <h2>Espace Coach</h2>
+      <form (ngSubmit)="registerCoach()">
+        <input type="text" placeholder="Nom" [(ngModel)]="coach.nom" name="nom" required />
+        <input type="text" placeholder="Prénom" [(ngModel)]="coach.prenom" name="prenom" required />
+        <input type="text" placeholder="Spécialité" [(ngModel)]="coach.specialite" name="specialite" />
+        <input type="email" placeholder="Email" [(ngModel)]="coach.email" name="email" required />
+        <input type="text" placeholder="Téléphone" [(ngModel)]="coach.telephone" name="telephone" required />
+        <button type="submit">S'inscrire</button>
+      </form>
+    </div>
+
+    <!-- Formulaire Client -->
+    <div class="right-section" *ngIf="selectedTab === 'client'">
+      <h2>Espace Client</h2>
+      <form (ngSubmit)="registerClient()">
+        <input type="text" placeholder="Nom" [(ngModel)]="client.nom" name="nom" required />
+        <input type="number" placeholder="Âge" [(ngModel)]="client.age" name="age" required />
+        <input type="text" placeholder="email" [(ngModel)]="client.email" name="objectif" />
+
+        <input type="text" placeholder="password" [(ngModel)]="client.password" name="objectif" />
+        <button type="submit">S'inscrire</button>
+      </form>
+    </div>
+  </div>
+</div>

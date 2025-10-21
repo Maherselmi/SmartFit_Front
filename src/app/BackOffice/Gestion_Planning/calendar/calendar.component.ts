@@ -3,15 +3,15 @@ import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { Planning } from '../../../Models/Planning';
-import { PlanningService } from '../../../services/planning.service';
+import {Planning} from "../../../Models/Planning";
+import {PlanningService} from "../../../services/planning.service";
 
 @Component({
-  selector: 'app-liste-planning',
-  templateUrl: './liste-planning.component.html',
-  styleUrls: ['./liste-planning.component.css']
+  selector: 'app-calendar',
+  templateUrl: './calendar.component.html',
+  styleUrls: ['./calendar.component.css']
 })
-export class ListePlanningComponent implements OnInit {
+export class CalendarComponent implements OnInit {
 
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
@@ -34,7 +34,7 @@ export class ListePlanningComponent implements OnInit {
     events: [] // les événements seront chargés dynamiquement
   };
 
-  constructor(private planningService: PlanningService) {}
+  constructor(private planningService: PlanningService) { }
 
   ngOnInit(): void {
     this.loadPlannings();
@@ -42,7 +42,7 @@ export class ListePlanningComponent implements OnInit {
 
   loadPlannings(): void {
     this.planningService.getPlannings().subscribe((plannings: Planning[]) => {
-      // Conversion des plannings pour FullCalendar
+      // Conversion des plannings en format FullCalendar
       this.calendarOptions.events = plannings.map(p => ({
         title: p.titre,
         start: p.dateDebut,

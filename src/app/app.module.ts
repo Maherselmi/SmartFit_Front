@@ -16,6 +16,7 @@ import { CalendarComponent } from './BackOffice/Gestion_Planning/calendar/calend
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import { SignupComponent } from './BackOffice/signup/signup/signup.component';
 import {FormsModule} from "@angular/forms";
+import { SigninComponent } from './BackOffice/signin/signin/signin.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import {FormsModule} from "@angular/forms";
     ListeStatistiquesComponent,
     CalendarComponent,
     SignupComponent,
+    SigninComponent,
   ],
   imports: [
     BrowserModule,

@@ -30,6 +30,12 @@ export class SignupComponent {
     email: '',
     password: ''
   };
+  admin = {
+    nom: '',
+    email: '',
+    telephone: '',
+    password: ''
+  };
 
   constructor(private signupService: SignupService, private router: Router) {}
 
@@ -47,6 +53,16 @@ export class SignupComponent {
   // ✅ Inscription client
   registerClient() {
     this.signupService.registerClient(this.client).subscribe({
+      next: () => {
+        alert('Client inscrit avec succès !');
+        this.router.navigate(['/login']);
+      },
+      error: (err) => alert('Erreur : ' + err.message)
+    });
+  }
+
+  registerAdmin() {
+    this.signupService.registerAdmin(this.client).subscribe({
       next: () => {
         alert('Client inscrit avec succès !');
         this.router.navigate(['/login']);

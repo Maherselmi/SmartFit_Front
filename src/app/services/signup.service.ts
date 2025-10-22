@@ -18,4 +18,7 @@ export class SignupService {
   registerClient(clientData: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/client`, clientData);
   }
+  registerAdmin(clientData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/admin`, clientData);
+  }
 }

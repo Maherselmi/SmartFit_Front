@@ -15,13 +15,19 @@ import {
 import {CalendarComponent} from "./BackOffice/Gestion_Planning/calendar/calendar.component";
 import {SignupComponent} from "./BackOffice/signup/signup/signup.component";
 import {SigninComponent} from "./BackOffice/signin/signin/signin.component";
+import {ChatbotComponent} from "./BackOffice/chatbot/chatbot.component";
+import {IndexComponent} from "./FrontOffice/index/index.component";
+import {PlanningsComponent} from "./FrontOffice/PlanningsClient/plannings/plannings.component";
 
 const routes: Routes = [
+  { path: 'Index', component: IndexComponent },
+  { path: 'PlanningClient', component: PlanningsComponent },
+
   { path: 'signup', component: SignupComponent },
   { path: '', redirectTo: '/signup', pathMatch: 'full' },
   { path: 'Dashboard', component: ListeStatistiquesComponent },
   { path: 'signin', component: SigninComponent },
-
+  { path: 'chatbot', component: ChatbotComponent },
   { path: 'Liste-Client', component: ListeClientComponent },
   { path: 'Liste-Coaches', component: ListeCoachsComponent },
   { path: 'Liste-Planning', component: ListePlanningComponent },

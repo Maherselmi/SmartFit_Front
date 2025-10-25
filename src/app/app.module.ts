@@ -17,6 +17,10 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
 import { SignupComponent } from './BackOffice/signup/signup/signup.component';
 import {FormsModule} from "@angular/forms";
 import { SigninComponent } from './BackOffice/signin/signin/signin.component';
+import { ChatbotComponent } from './BackOffice/chatbot/chatbot.component';
+import { IndexComponent } from './FrontOffice/index/index.component';
+import { PlanningsComponent } from './FrontOffice/PlanningsClient/plannings/plannings.component';
+import {NgOptimizedImage} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -30,6 +34,9 @@ import { SigninComponent } from './BackOffice/signin/signin/signin.component';
     CalendarComponent,
     SignupComponent,
     SigninComponent,
+    ChatbotComponent,
+    IndexComponent,
+    PlanningsComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,6 +44,7 @@ import { SigninComponent } from './BackOffice/signin/signin/signin.component';
     FullCalendarModule,
     HttpClientModule,
     FormsModule,
+    NgOptimizedImage,
     // ✅ Nécessaire pour faire des requêtes HTTP
 
 

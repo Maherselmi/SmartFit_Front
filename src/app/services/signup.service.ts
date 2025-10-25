@@ -7,7 +7,11 @@ import { Observable } from 'rxjs';
 })
 export class SignupService {
 
+<<<<<<< HEAD
   private baseUrl = 'http://localhost:9090/api/signup';
+=======
+  private baseUrl = 'http://localhost:9040/api/signup';
+>>>>>>> 4c7b750 (Added Subscription Module (backoffice))
 
   constructor(private http: HttpClient) {}
 

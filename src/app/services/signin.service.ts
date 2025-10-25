@@ -6,7 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
+<<<<<<< HEAD
   private baseUrl = 'http://localhost:9090/api/auth'; // correspond à ton @RequestMapping("/api/auth")
+=======
+  private baseUrl = 'http://localhost:9040/api/auth'; // correspond à ton @RequestMapping("/api/auth")
+>>>>>>> 4c7b750 (Added Subscription Module (backoffice))
 
   constructor(private http: HttpClient) {}
 

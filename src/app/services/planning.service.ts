@@ -9,7 +9,11 @@ import {Planning} from "../Models/Planning";
 })
 export class PlanningService {
 
+<<<<<<< HEAD
   private baseUrl = 'http://localhost:9090/api/plannings/all';
+=======
+  private baseUrl = 'http://localhost:9040/api/plannings/all';
+>>>>>>> 4c7b750 (Added Subscription Module (backoffice))
 
   constructor(private http: HttpClient) { }
 

@@ -17,6 +17,7 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
 import { SignupComponent } from './BackOffice/signup/signup/signup.component';
 import {FormsModule} from "@angular/forms";
 import { SigninComponent } from './BackOffice/signin/signin/signin.component';
+import { ChatbotComponent } from './components/chatbot/chatbot.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { SigninComponent } from './BackOffice/signin/signin/signin.component';
     CalendarComponent,
     SignupComponent,
     SigninComponent,
+    ChatbotComponent,
   ],
   imports: [
     BrowserModule,

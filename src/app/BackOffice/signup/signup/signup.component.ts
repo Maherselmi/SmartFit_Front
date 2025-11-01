@@ -30,12 +30,7 @@ export class SignupComponent {
     email: '',
     password: ''
   };
-  admin = {
-    nom: '',
-    email: '',
-    telephone: '',
-    password: ''
-  };
+
 
   constructor(private signupService: SignupService, private router: Router) {}
 

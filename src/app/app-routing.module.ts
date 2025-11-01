@@ -23,10 +23,10 @@ const routes: Routes = [
   { path: 'Index', component: IndexComponent },
   { path: 'PlanningClient', component: PlanningsComponent },
 
-  { path: 'signup', component: SignupComponent },
-  { path: '', redirectTo: '/signup', pathMatch: 'full' },
-  { path: 'Dashboard', component: ListeStatistiquesComponent },
   { path: 'signin', component: SigninComponent },
+  { path: '', redirectTo: '/signin', pathMatch: 'full' },
+  { path: 'Dashboard', component: ListeStatistiquesComponent },
+  { path: 'signup', component: SignupComponent },
   { path: 'chatbot', component: ChatbotComponent },
   { path: 'Liste-Client', component: ListeClientComponent },
   { path: 'Liste-Coaches', component: ListeCoachsComponent },

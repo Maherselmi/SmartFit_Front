@@ -7,9 +7,7 @@
     <button [class.active]="selectedTab === 'client'" (click)="selectedTab = 'client'">
       Espace Clients
     </button>
-    <button [class.active]="selectedTab === 'admin'" (click)="selectedTab = 'admin'">
-      Espace Admins
-    </button>
+
   </div>
 
   <div class="content">
@@ -57,17 +55,6 @@
       </form>
     </div>
 
-    <!-- Formulaire Admin -->
-    <div class="right-section" *ngIf="selectedTab === 'admin'">
-      <h2>Inscription Admin</h2>
-      <form (ngSubmit)="registerAdmin()">
-        <input type="text" placeholder="Nom" [(ngModel)]="admin.nom" name="adminNom" required />
-        <input type="email" placeholder="Email" [(ngModel)]="admin.email" name="adminEmail" required />
-        <input type="text" placeholder="Téléphone" [(ngModel)]="admin.telephone" name="adminTelephone" />
 
-        <input type="password" placeholder="Mot de passe" [(ngModel)]="admin.password" name="adminPassword" required />
-        <button type="submit">S'inscrire</button>
-      </form>
-    </div>
   </div>
 </div>

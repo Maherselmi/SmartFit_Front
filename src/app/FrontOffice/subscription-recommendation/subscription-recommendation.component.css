@@ -1,0 +1,228 @@
+/* Form Styling */
+.subscription_form {
+  margin-top: 40px;
+  padding: 40px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.form_row {
+  margin-bottom: 30px;
+}
+
+.form_label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form_input {
+  width: 100%;
+  height: 48px;
+  border: solid 1px #e5e5e5;
+  border-radius: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  color: #db5246;
+  background: #FFFFFF;
+  -webkit-transition: all 200ms ease;
+  -moz-transition: all 200ms ease;
+  -ms-transition: all 200ms ease;
+  -o-transition: all 200ms ease;
+  transition: all 200ms ease;
+}
+
+.form_input:focus {
+  outline: none;
+  border-color: #ff9711;
+}
+
+.form_textarea {
+  height: auto;
+  min-height: 120px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  resize: vertical;
+}
+
+.form_actions {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.form_button {
+  border: solid 1px #ff9711;
+  background: #ff9711;
+  color: #FFFFFF;
+  padding: 0 30px;
+}
+
+.form_button:hover {
+  background: #ef8701;
+  border-color: #ef8701;
+}
+
+.form_button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Alert Message */
+.alert_message {
+  padding: 15px 20px;
+  margin-bottom: 30px;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Offers Styling */
+.offer_service {
+  position: relative;
+  padding: 40px 30px;
+  background: #FFFFFF;
+  border: solid 1px #e5e5e5;
+  -webkit-transition: all 200ms ease;
+  -moz-transition: all 200ms ease;
+  -ms-transition: all 200ms ease;
+  -o-transition: all 200ms ease;
+  transition: all 200ms ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.offer_service:hover {
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+}
+
+.offer_service.featured_offer {
+  border: solid 2px #ff9711;
+  background: #fffaf5;
+}
+
+.offer_badge {
+  position: absolute;
+  top: -15px;
+  right: 20px;
+  background: #ff9711;
+  color: #FFFFFF;
+  padding: 8px 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 0;
+}
+
+.offer_price_container {
+  margin-top: 20px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.offer_price {
+  font-size: 36px;
+  font-weight: 600;
+  color: #ff9711;
+  line-height: 1.2;
+}
+
+.offer_duration {
+  font-size: 14px;
+  color: #a5a5a5;
+  font-weight: 400;
+}
+
+.offer_features {
+  margin-top: 20px;
+  flex-grow: 1;
+}
+
+.offer_features_title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.offer_features_list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.offer_features_list li {
+  padding: 8px 0;
+  font-size: 14px;
+  color: #535353;
+  line-height: 1.8;
+}
+
+.offer_features_list li i {
+  color: #28a745;
+  margin-right: 10px;
+  font-size: 12px;
+}
+
+.offer_action {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: solid 1px #e5e5e5;
+}
+
+.offer_button {
+  width: 100%;
+  text-align: center;
+  border: solid 1px #ff9711;
+  background: #ff9711;
+}
+
+.offer_button a {
+  line-height: 41px;
+  color: #FFFFFF;
+  display: block;
+  width: 100%;
+}
+
+.offer_button:hover {
+  background: #ef8701;
+  border-color: #ef8701;
+}
+
+.offer_button:hover a {
+  color: #FFFFFF;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .subscription_form {
+    padding: 30px 20px;
+  }
+  
+  .offer_service {
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 575px) {
+  .subscription_form {
+    padding: 20px 15px;
+  }
+  
+  .form_row {
+    margin-bottom: 20px;
+  }
+}

@@ -1,10 +1,230 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AbonnementsService, Abonnement } from '../../../services/abonnements.service';
 
 @Component({
   selector: 'app-liste-abonnements',
   templateUrl: './liste-abonnements.component.html',
   styleUrls: ['./liste-abonnements.component.css']
 })
-export class ListeAbonnementsComponent {
+export class ListeAbonnementsComponent implements OnInit {
+  
+  abonnements: Abonnement[] = [];
+  selectedAbonnement: Abonnement | null = null;
+  showForm = false;
+  showDetails = false;
+  isEditing = false;
+  loading = false;
+  predictingPrice = false;
+  error = '';
 
+  // Formulaire pour créer/modifier un abonnement
+  abonnementForm: Abonnement = {
+    typeAbonnement: '',
+    prix: 0,
+    dateDebut: '',
+    dateFin: '',
+    statut: 'ACTIVE',
+    modePaiement: 'COMPTE_BANCAIRE',
+    renouvellementAuto: false
+  };
+
+  // Types d'abonnement disponibles
+  TYPES = [
+    "Premium Mensuel",
+    "Premium Hebdomadaire",
+    "Basique Mensuel",
+    "Basique Hebdomadaire",
+    "Etudiant Mensuel",
+    "Pro Annuel",
+    "Family Mensuel",
+  ];
+
+  // Options pour les select
+  statutOptions = ['ACTIVE', 'SUSPENDU', 'ANNULE', 'EXPIRE'];
+  modePaiementOptions = ['COMPTE_BANCAIRE', 'PAYPAL', 'VIREMENT', 'ESPECE'];
+
+  constructor(private abonnementsService: AbonnementsService) { }
+
+  ngOnInit(): void {
+    this.loadAbonnements();
+  }
+
+  // 🔹 Charger tous les abonnements
+  loadAbonnements(): void {
+    this.loading = true;
+    this.error = '';
+    this.abonnementsService.getAll().subscribe({
+      next: (data) => {
+        this.abonnements = Array.isArray(data) ? data : [];
+        this.loading = false;
+        if (this.abonnements.length === 0) {
+          console.log('Aucun abonnement trouvé');
+        }
+      },
+      error: (err) => {
+        this.error = 'Erreur lors du chargement des abonnements';
+        this.abonnements = [];
+        this.loading = false;
+        console.error('Erreur lors du chargement des abonnements:', err);
+      }
+    });
+  }
+
+  // 🔹 Afficher le formulaire de création
+  showCreateForm(): void {
+    this.resetForm();
+    this.showForm = true;
+    this.showDetails = false;
+    this.isEditing = false;
+  }
+
+  // 🔹 Afficher les détails d'un abonnement
+  viewDetails(abonnement: Abonnement): void {
+    this.selectedAbonnement = { ...abonnement };
+    this.showDetails = true;
+    this.showForm = false;
+  }
+
+  // 🔹 Afficher le formulaire d'édition
+  editAbonnement(abonnement: Abonnement): void {
+    this.abonnementForm = { ...abonnement };
+    this.selectedAbonnement = abonnement;
+    this.showForm = true;
+    this.showDetails = false;
+    this.isEditing = true;
+  }
+
+  // 🔹 Sauvegarder (créer ou modifier)
+  saveAbonnement(): void {
+    if (this.isEditing && this.selectedAbonnement?.id) {
+      // Modification
+      this.abonnementsService.update(this.selectedAbonnement.id, this.abonnementForm).subscribe({
+        next: () => {
+          this.loadAbonnements();
+          this.hideForm();
+        },
+        error: (err) => {
+          this.error = 'Erreur lors de la modification';
+          console.error(err);
+        }
+      });
+    } else {
+      // Création
+      this.abonnementsService.create(this.abonnementForm).subscribe({
+        next: () => {
+          this.loadAbonnements();
+          this.hideForm();
+        },
+        error: (err) => {
+          this.error = 'Erreur lors de la création';
+          console.error(err);
+        }
+      });
+    }
+  }
+
+  // 🔹 Supprimer un abonnement
+  deleteAbonnement(abonnement: Abonnement): void {
+    if (abonnement.id && confirm('Êtes-vous sûr de vouloir supprimer cet abonnement ?')) {
+      this.abonnementsService.delete(abonnement.id).subscribe({
+        next: () => {
+          this.loadAbonnements();
+        },
+        error: (err) => {
+          this.error = 'Erreur lors de la suppression';
+          console.error(err);
+        }
+      });
+    }
+  }
+
+  // 🔹 Masquer le formulaire
+  hideForm(): void {
+    this.showForm = false;
+    this.showDetails = false;
+    this.resetForm();
+  }
+
+  // 🔹 Réinitialiser le formulaire
+  resetForm(): void {
+    this.abonnementForm = {
+      typeAbonnement: '',
+      prix: 0,
+      dateDebut: '',
+      dateFin: '',
+      statut: 'ACTIVE',
+      modePaiement: 'COMPTE_BANCAIRE',
+      renouvellementAuto: false
+    };
+    this.selectedAbonnement = null;
+    this.isEditing = false;
+    this.error = '';
+  }
+
+  // 🔹 Obtenir la classe CSS pour le statut
+  getStatutClass(statut: string): string {
+    switch (statut) {
+      case 'ACTIVE': return 'badge-success';
+      case 'SUSPENDU': return 'badge-warning';
+      case 'ANNULE': return 'badge-danger';
+      case 'EXPIRE': return 'badge-secondary';
+      default: return 'badge-primary';
+    }
+  }
+
+  // 🔹 Formater la date
+  formatDate(dateString: string | undefined | null): string {
+    if (!dateString) {
+      return '-';
+    }
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        return '-';
+      }
+      return date.toLocaleDateString('fr-FR');
+    } catch (error) {
+      console.error('Erreur lors du formatage de la date:', error);
+      return '-';
+    }
+  }
+
+  // 🔹 Prédire le prix automatiquement
+  predictPrice(): void {
+    // Prédire le prix si tous les champs requis sont remplis
+    if (this.abonnementForm.typeAbonnement && 
+        this.abonnementForm.dateDebut && 
+        this.abonnementForm.dateFin) {
+      
+      this.predictingPrice = true;
+      this.abonnementsService.predictPrice(
+        this.abonnementForm.typeAbonnement,
+        this.abonnementForm.dateDebut,
+        this.abonnementForm.dateFin
+      ).subscribe({
+        next: (response) => {
+          this.abonnementForm.prix = response.predicted_price;
+          this.predictingPrice = false;
+        },
+        error: (err) => {
+          console.error('Erreur lors de la prédiction du prix:', err);
+          this.predictingPrice = false;
+          // Ne pas afficher d'erreur critique, juste laisser l'utilisateur entrer le prix manuellement
+          if (!this.isEditing) {
+            this.error = 'Impossible de prédire le prix automatiquement. Veuillez entrer le prix manuellement.';
+          }
+        }
+      });
+    }
+  }
+
+  // 🔹 Gérer les changements de type d'abonnement
+  onTypeChange(): void {
+    this.predictPrice();
+  }
+
+  // 🔹 Gérer les changements de date
+  onDateChange(): void {
+    this.predictPrice();
+  }
 }

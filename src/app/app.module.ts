@@ -21,6 +21,7 @@ import { ChatbotComponent } from './BackOffice/chatbot/chatbot.component';
 import { IndexComponent } from './FrontOffice/index/index.component';
 import { PlanningsComponent } from './FrontOffice/PlanningsClient/plannings/plannings.component';
 import {NgOptimizedImage} from "@angular/common";
+import { SubscriptionRecommendationComponent } from './FrontOffice/subscription-recommendation/subscription-recommendation.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import {NgOptimizedImage} from "@angular/common";
     ChatbotComponent,
     IndexComponent,
     PlanningsComponent,
+    SubscriptionRecommendationComponent,
   ],
   imports: [
     BrowserModule,

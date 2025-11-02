@@ -18,15 +18,17 @@ import {SigninComponent} from "./BackOffice/signin/signin/signin.component";
 import {ChatbotComponent} from "./BackOffice/chatbot/chatbot.component";
 import {IndexComponent} from "./FrontOffice/index/index.component";
 import {PlanningsComponent} from "./FrontOffice/PlanningsClient/plannings/plannings.component";
+import {SubscriptionRecommendationComponent} from "./FrontOffice/subscription-recommendation/subscription-recommendation.component";
 
 const routes: Routes = [
   { path: 'Index', component: IndexComponent },
   { path: 'PlanningClient', component: PlanningsComponent },
+  { path: 'subscription-recommendation', component: SubscriptionRecommendationComponent },
 
-  { path: 'signin', component: SigninComponent },
+  { path: 'signup', component: SignupComponent },
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
   { path: 'Dashboard', component: ListeStatistiquesComponent },
-  { path: 'signup', component: SignupComponent },
+  { path: 'signin', component: SigninComponent },
   { path: 'chatbot', component: ChatbotComponent },
   { path: 'Liste-Client', component: ListeClientComponent },
   { path: 'Liste-Coaches', component: ListeCoachsComponent },

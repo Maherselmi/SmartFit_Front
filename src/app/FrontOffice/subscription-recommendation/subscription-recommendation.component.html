@@ -1,0 +1,231 @@
+<div class="super_container">
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="header_content d-flex flex-row align-items-center justify-content-start trans_400">
+            <a routerLink="/Index">
+              <div class="logo d-flex flex-row align-items-center justify-content-start">
+                <img src="assets/FrontOffice/images/dot.png" alt="">
+                <div>Smart<span>Fit</span></div>
+              </div>
+            </a>
+            <nav class="main_nav">
+              <ul class="d-flex flex-row align-items-center justify-content-start">
+                <li><a routerLink="/Index">Home</a></li>
+                <li class="active"><a routerLink="/subscription-recommendation">Abonnements</a></li>
+              </ul>
+            </nav>
+            <div class="phone d-flex flex-row align-items-center justify-content-start ml-auto">
+              <i class="fa fa-phone" aria-hidden="true"></i>
+              <div>652-345 3222 11</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hamburger -->
+  <div class="hamburger_bar trans_400 d-flex flex-row align-items-center justify-content-start">
+    <div class="hamburger">
+      <div class="menu_toggle d-flex flex-row align-items-center justify-content-start">
+        <span>menu</span>
+        <div class="hamburger_container">
+          <div class="menu_hamburger">
+            <div class="line_1 hamburger_lines" style="transform: matrix(1, 0, 0, 1, 0, 0);"></div>
+            <div class="line_2 hamburger_lines" style="visibility: inherit; opacity: 1;"></div>
+            <div class="line_3 hamburger_lines" style="transform: matrix(1, 0, 0, 1, 0, 0);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menu -->
+  <div class="menu trans_800">
+    <div class="menu_content d-flex flex-column align-items-center justify-content-center text-center">
+      <ul>
+        <li><a routerLink="/Index">Home</a></li>
+        <li><a routerLink="/subscription-recommendation">Abonnements</a></li>
+      </ul>
+    </div>
+    <div class="menu_phone d-flex flex-row align-items-center justify-content-start">
+      <i class="fa fa-phone" aria-hidden="true"></i>
+      <span>652-345 3222 11</span>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="about">
+    <div class="container about_container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="about_content">
+            <div class="section_title_container">
+              <div class="section_subtitle">smartfit</div>
+              <div class="section_title">Trouvez votre <span>abonnement idéal</span></div>
+            </div>
+            <div class="text_highlight">Répondez à quelques questions et obtenez des recommandations personnalisées basées sur votre profil et vos besoins.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Section -->
+  <div class="services" *ngIf="!showOffers">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+          <!-- Error Message -->
+          <div *ngIf="error" class="alert_message">
+            {{error}}
+          </div>
+
+          <form (ngSubmit)="onSubmit()" #recommendationForm="ngForm" class="subscription_form">
+            <div class="form_row">
+              <div class="form_label">Niveau d'activité physique *</div>
+              <select 
+                class="form_input" 
+                [(ngModel)]="activityLevel" 
+                name="activityLevel" 
+                required>
+                <option value="" disabled selected>Sélectionnez votre niveau d'activité</option>
+                <option *ngFor="let level of activityLevels" [value]="level.value">
+                  {{level.label}}
+                </option>
+              </select>
+            </div>
+
+            <div class="form_row">
+              <div class="form_label">Style de vie *</div>
+              <select 
+                class="form_input" 
+                [(ngModel)]="lifestyle" 
+                name="lifestyle" 
+                required>
+                <option value="" disabled selected>Sélectionnez votre style de vie</option>
+                <option *ngFor="let life of lifestyles" [value]="life.value">
+                  {{life.label}}
+                </option>
+              </select>
+            </div>
+
+            <div class="form_row">
+              <div class="form_label">Informations supplémentaires (optionnel)</div>
+              <textarea 
+                class="form_input form_textarea" 
+                [(ngModel)]="additionalInfo" 
+                name="additionalInfo" 
+                rows="4" 
+                placeholder="Décrivez vos objectifs, contraintes, préférences ou toute autre information pertinente..."></textarea>
+            </div>
+
+            <div class="form_actions">
+              <button 
+                type="submit" 
+                class="button form_button" 
+                [disabled]="loading || !activityLevel || !lifestyle">
+                <span *ngIf="loading">Génération en cours...</span>
+                <span *ngIf="!loading">Générer mes offres</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Offers Section -->
+  <div class="services" *ngIf="showOffers && offers.length > 0">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="section_title_container">
+            <div class="section_subtitle">nos recommandations</div>
+            <div class="section_title">Offres <span>personnalisées</span></div>
+          </div>
+          <div class="text_highlight text-center">Basé sur votre profil : {{getActivityLevelLabel(activityLevel)}} | {{getLifestyleLabel(lifestyle)}}</div>
+        </div>
+      </div>
+      <div class="row services_row">
+        <div *ngFor="let offer of offers; let i = index" class="col-xl-4 col-md-6 service_col">
+          <div class="service offer_service" [class.featured_offer]="i === 1">
+            <div class="offer_badge" *ngIf="i === 1">Recommandé</div>
+            <div class="service_title_container d-flex flex-row align-items-center justify-content-start">
+              <div class="service_icon"><img src="assets/FrontOffice/images/icon_4.png" alt=""></div>
+              <div class="service_title">{{offer.name}}</div>
+            </div>
+            <div class="offer_price_container">
+              <span class="offer_price">{{offer.price}}€</span>
+              <span class="offer_duration">/{{offer.duration}} jours</span>
+            </div>
+            <div class="service_text">
+              <p>{{offer.description}}</p>
+            </div>
+            <div class="offer_features">
+              <div class="offer_features_title">Inclus dans cette offre :</div>
+              <ul class="offer_features_list">
+                <li *ngFor="let feature of offer.features">
+                  <i class="fa fa-check"></i> {{feature}}
+                </li>
+              </ul>
+            </div>
+            <div class="offer_action">
+              <div class="button offer_button" (click)="selectOffer(offer)">
+                <a href="javascript:void(0)">Choisir cette offre</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <div class="button" (click)="resetForm()">
+            <a href="javascript:void(0)">Nouvelle recherche</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+          <div class="footer_container">
+            <div class="footer_content">
+              <div class="footer_logo">
+                <a routerLink="/Index">
+                  <div class="logo d-flex flex-row align-items-center justify-content-center">
+                    <img src="assets/FrontOffice/images/dot.png" alt="">
+                    <div>Smart<span>Fit</span></div>
+                  </div>
+                </a>
+              </div>
+              <nav class="footer_nav">
+                <ul class="d-flex flex-sm-row flex-column align-items-sm-start align-items-center justify-content-center">
+                  <li><a routerLink="/Index">Home</a></li>
+                  <li><a routerLink="/subscription-recommendation">Abonnements</a></li>
+                </ul>
+              </nav>
+              <div class="newsletter_container">
+                <form action="#" id="newsletter_form" class="newsletter_form">
+                  <input type="text" class="newsletter_input" placeholder="Enter your email here" required="required">
+                  <button class="newsletter_button">go</button>
+                </form>
+              </div>
+              <div class="copyright d-flex flex-row align-items-start justify-content-sm-end justify-content-center">
+                Copyright &copy; {{currentYear}} All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+              </div>
+            </div>
+            <div class="footer_image text-center"><img src="assets/FrontOffice/images/footer.png" alt=""></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

@@ -15,7 +15,6 @@ import {
 import {CalendarComponent} from "./BackOffice/Gestion_Planning/calendar/calendar.component";
 import {SignupComponent} from "./BackOffice/signup/signup/signup.component";
 import {SigninComponent} from "./BackOffice/signin/signin/signin.component";
-import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import {IndexComponent} from "./FrontOffice/index/index.component";
 import {PlanningsComponent} from "./FrontOffice/PlanningsClient/plannings/plannings.component";
 import {FitnessProgressionComponent} from "./FrontOffice/fitness-progression/fitness-progression.component";
@@ -29,19 +28,12 @@ const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
   { path: 'Dashboard', component: ListeStatistiquesComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'chatbot', component: ChatbotComponent },
   { path: 'Liste-Client', component: ListeClientComponent },
   { path: 'Liste-Coaches', component: ListeCoachsComponent },
   { path: 'Liste-Planning', component: ListePlanningComponent },
   { path: 'Liste-Nutritionnelle', component: ListeNutritionnelleComponent },
   { path: 'Liste-Abonnements', component: ListeAbonnementsComponent },
   { path: 'ClientForm', component: ClientFormComponent },
-
-
-
-
-
-
 
 ];
 

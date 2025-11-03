@@ -17,7 +17,6 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
 import { SignupComponent } from './BackOffice/signup/signup/signup.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { SigninComponent } from './BackOffice/signin/signin/signin.component';
-import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import { IndexComponent } from './FrontOffice/index/index.component';
 import { PlanningsComponent } from './FrontOffice/PlanningsClient/plannings/plannings.component';
 import {NgOptimizedImage} from "@angular/common";
@@ -38,10 +37,8 @@ import { ClientFormComponent } from './FrontOffice/clientform/clientform.compone
     CalendarComponent,
     SignupComponent,
     SigninComponent,
-    ChatbotComponent,
     IndexComponent,
     PlanningsComponent,
-    ChatbotComponent,
     FitnessProgressionComponent,
     ClientFormComponent
   ],
@@ -53,7 +50,6 @@ import { ClientFormComponent } from './FrontOffice/clientform/clientform.compone
     FormsModule,
     NgOptimizedImage,
     ReactiveFormsModule,
-    // ✅ Nécessaire pour faire des requêtes HTTP
 
 
   ],

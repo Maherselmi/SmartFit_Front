@@ -1,0 +1,79 @@
+/* Custom Styles for Client Form */
+
+.card {
+    border-radius: 15px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+.form-control,
+.form-select {
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.btn {
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border: none;
+}
+
+.btn-success:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+
+/* Nutrition cards hover effects */
+
+.card.bg-info,
+.card.bg-success,
+.card.bg-warning,
+.card.bg-danger {
+    transition: transform 0.3s ease;
+}
+
+.card.bg-info:hover,
+.card.bg-success:hover,
+.card.bg-warning:hover,
+.card.bg-danger:hover {
+    transform: scale(1.05);
+}
+
+
+/* Meal cards styling */
+
+.nutrition-details small {
+    font-size: 0.9em;
+}
+
+
+/* Responsive adjustments */
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    .display-5 {
+        font-size: 2rem;
+    }
+}

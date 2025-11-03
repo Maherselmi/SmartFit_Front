@@ -15,13 +15,15 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarComponent } from './BackOffice/Gestion_Planning/calendar/calendar.component';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import { SignupComponent } from './BackOffice/signup/signup/signup.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { SigninComponent } from './BackOffice/signin/signin/signin.component';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import { IndexComponent } from './FrontOffice/index/index.component';
 import { PlanningsComponent } from './FrontOffice/PlanningsClient/plannings/plannings.component';
 import {NgOptimizedImage} from "@angular/common";
 import { FitnessProgressionComponent } from './FrontOffice/fitness-progression/fitness-progression.component';
+import { ClientFormComponent } from './FrontOffice/clientform/clientform.component';
+
 
 
 @NgModule({
@@ -41,6 +43,7 @@ import { FitnessProgressionComponent } from './FrontOffice/fitness-progression/f
     PlanningsComponent,
     ChatbotComponent,
     FitnessProgressionComponent,
+    ClientFormComponent
   ],
   imports: [
     BrowserModule,
@@ -49,6 +52,7 @@ import { FitnessProgressionComponent } from './FrontOffice/fitness-progression/f
     HttpClientModule,
     FormsModule,
     NgOptimizedImage,
+    ReactiveFormsModule,
     // ✅ Nécessaire pour faire des requêtes HTTP
 
 

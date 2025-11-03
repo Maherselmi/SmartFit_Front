@@ -19,6 +19,7 @@ import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import {IndexComponent} from "./FrontOffice/index/index.component";
 import {PlanningsComponent} from "./FrontOffice/PlanningsClient/plannings/plannings.component";
 import {FitnessProgressionComponent} from "./FrontOffice/fitness-progression/fitness-progression.component";
+import {ClientFormComponent} from "./FrontOffice/clientform/clientform.component";
 
 const routes: Routes = [
   { path: 'Index', component: IndexComponent },
@@ -34,6 +35,8 @@ const routes: Routes = [
   { path: 'Liste-Planning', component: ListePlanningComponent },
   { path: 'Liste-Nutritionnelle', component: ListeNutritionnelleComponent },
   { path: 'Liste-Abonnements', component: ListeAbonnementsComponent },
+  { path: 'ClientForm', component: ClientFormComponent },
+
 
 
 

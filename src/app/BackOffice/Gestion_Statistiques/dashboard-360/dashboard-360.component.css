@@ -1,0 +1,255 @@
+.container {
+  padding: 2rem;
+  font-family: 'Poppins', sans-serif;
+  color: #222;
+}
+
+/* HEADER */
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.refresh-btn {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.refresh-btn:hover {
+  background: #4338ca;
+}
+
+/* STAT CARDS */
+.stats-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.modern-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: linear-gradient(135deg, #f8fafc, #eef2ff);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s;
+}
+
+.modern-card:hover {
+  transform: translateY(-4px);
+}
+
+.stat-icon {
+  font-size: 2rem;
+}
+
+.stat-title {
+  font-weight: 600;
+  color: #666;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+/* CHART */
+.chart-section {
+  margin: 3rem 0;
+}
+
+/* MEMBERS */
+.member-card {
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-bottom: 1.5rem;
+  padding: 1.2rem 1.5rem;
+}
+
+.member-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.member-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.member-meta {
+  color: #777;
+  font-size: 0.9rem;
+}
+
+.member-actions button {
+  margin-left: 0.5rem;
+  border: none;
+  background: #6366f1;
+  color: white;
+  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.member-actions button:hover {
+  background: #4f46e5;
+}
+
+.progress-bar-bg {
+  background: #e5e7eb;
+  height: 10px;
+  border-radius: 10px;
+  margin-top: 0.6rem;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  background: linear-gradient(to right, #4f46e5, #3b82f6);
+  height: 100%;
+  transition: width 0.4s;
+}
+
+.progress-text {
+  text-align: right;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* DECISION */
+.decision-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.2rem;
+}
+
+.decision-card {
+  background: #f9fafb;
+  border-radius: 14px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.badge {
+  display: inline-block;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 12px;
+  margin: 0.3rem;
+  font-size: 0.85rem;
+}
+
+.badge-primary { background: #6366f1; }
+.badge-success { background: #10b981; }
+.badge-warning { background: #f59e0b; }
+
+.note {
+  color: #888;
+  font-size: 0.9rem;
+}
+.decision-section {
+  margin-top: 40px;
+  padding: 30px;
+  background: #f8f9fc;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.section-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  color: #2b2b2b;
+  margin-bottom: 30px;
+}
+
+.decision-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.decision-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.decision-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* En-tête des cartes */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.card-header .icon {
+  font-size: 1.8rem;
+}
+
+.card-header h4 {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+/* Style des actions */
+.action-card {
+  background: #f4f7ff;
+  border-left: 4px solid #4a90e2;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.action-card:hover {
+  background: #eaf1ff;
+  transform: translateX(4px);
+}
+
+.action-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* Couleurs thématiques */
+.fidelity-card .action-card {
+  border-left-color: #007bff;
+}
+
+.health-card .action-card {
+  border-left-color: #28a745;
+}
+
+.profit-card .action-card {
+  border-left-color: #ffc107;
+}
+
+/* Message vide */
+.empty-message {
+  text-align: center;
+  color: #aaa;
+  font-style: italic;
+  padding: 15px;
+}

@@ -21,4 +21,7 @@ export class AuthService {
   loginAdmin(credentials: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/login/admin`, credentials);
   }
+  logout(): Observable<any> {
+    return this.http.post(`${this.baseUrl}/logout`, {}, { withCredentials: true });
+  }
 }

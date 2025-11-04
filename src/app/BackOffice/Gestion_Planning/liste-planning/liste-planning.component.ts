@@ -5,6 +5,8 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Planning } from '../../../Models/Planning';
 import { PlanningService } from '../../../services/planning.service';
+import {AuthService} from "../../../services/signin.service";
+
 
 @Component({
   selector: 'app-liste-planning',
@@ -34,7 +36,9 @@ export class ListePlanningComponent implements OnInit {
     events: [] // les événements seront chargés dynamiquement
   };
 
-  constructor(private planningService: PlanningService) {}
+  constructor(private planningService: PlanningService, private authService: AuthService // ✅ injecter ici
+  ) {
+  }
 
   ngOnInit(): void {
     this.loadPlannings();

@@ -1,0 +1,183 @@
+<header class="header">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="header_content d-flex flex-row align-items-center justify-content-start trans_400">
+          <a routerLink="/Index">
+            <div class="logo d-flex flex-row align-items-center justify-content-start">
+              <img src="assets/FrontOffice/images/dot.png" alt="">
+              <div>Smart<span>Fit</span></div>
+            </div>
+          </a>
+          <nav class="main_nav">
+            <ul class="d-flex flex-row align-items-center justify-content-start">
+              <li><a routerLink="/Index">Home</a></li>
+              <li><a routerLink="/PlanningClient">Planning</a></li>
+              <li><a routerLink="/FitnessProgression">Fitness_Progress</a></li>
+              <li><a routerLink="/subscription-recommendation">Abonnements</a></li>
+              <li><a routerLink="/ClientForm">plan_alimentaire</a></li>
+              <li><a routerLink="/Chatgpt">Assistant_Coachs</a></li>
+
+
+            </ul>
+          </nav>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<br>
+<br><br>
+<br><br>
+<br><br>
+<br>
+
+<div class="chat-container">
+  <!-- En-tête du chat -->
+  <div class="chat-header">
+    <div class="header-content">
+      <h2>🤖 Assistant de Recherche de Coach</h2>
+      <p>Répondez aux questions pour trouver le coach parfait</p>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-info">
+        <span class="progress-text">Question {{ questionIndex }}/{{ totalQuestions }}</span>
+        <span class="progress-percent">{{ progress | number:'1.0-0' }}%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zone des messages -->
+  <div class="chat-messages">
+    <!-- Historique des questions/réponses -->
+    <div *ngFor="let message of messages" class="message-pair">
+      <div class="message bot-message">
+        <div class="message-avatar">🤖</div>
+        <div class="message-content">
+          <div class="message-text">{{ message.question }}</div>
+          <div class="message-time">{{ message.timestamp | date:'HH:mm' }}</div>
+        </div>
+      </div>
+
+      <div class="message user-message">
+        <div class="message-content">
+          <div class="message-text">{{ message.answer }}</div>
+          <div class="message-time">{{ message.timestamp | date:'HH:mm' }}</div>
+        </div>
+        <div class="message-avatar">👤</div>
+      </div>
+    </div>
+
+    <!-- Question actuelle -->
+    <div *ngIf="!isCompleted && currentQuestion" class="message bot-message">
+      <div class="message-avatar">🤖</div>
+      <div class="message-content">
+        <div class="message-text">{{ currentQuestion }}</div>
+        <div class="message-time">Maintenant</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zone de saisie -->
+  <div *ngIf="!isCompleted" class="chat-input-container">
+    <div class="input-group">
+      <input
+        type="text"
+        [(ngModel)]="userAnswer"
+        (keyup.enter)="sendAnswer()"
+        placeholder="Tapez votre réponse ici..."
+        [disabled]="isLoading"
+        class="answer-input"
+        #answerInput
+      >
+      <button
+        (click)="sendAnswer()"
+        [disabled]="!userAnswer.trim() || isLoading"
+        class="send-button"
+      >
+        <span *ngIf="!isLoading">📤 Envoyer</span>
+        <span *ngIf="isLoading">⏳ Envoi...</span>
+      </button>
+    </div>
+    <div class="input-hint">
+      Appuyez sur Entrée pour envoyer rapidement
+    </div>
+  </div>
+
+  <!-- Résultats et recommandations -->
+  <div *ngIf="isCompleted" class="results-container">
+    <div class="results-header">
+      <h3>🎯 Vos Coachs Recommandés</h3>
+      <p class="profile-summary">
+        <strong>Votre profil:</strong> {{ userProfile }}
+      </p>
+    </div>
+
+    <!-- Liste des coachs -->
+    <div *ngIf="recommendations.length > 0" class="coaches-grid">
+      <div *ngFor="let coach of recommendations; let i = index" class="coach-card">
+        <div class="coach-badge" [class]="'badge-' + (i + 1)">
+          #{{ i + 1 }}
+        </div>
+
+        <div class="coach-main-info">
+          <h4 class="coach-name">{{ coach.name }}</h4>
+          <div class="coach-rating">
+            <span class="stars">★★★★★</span>
+            <span class="rating-value">{{ coach.rating_avg }}/5</span>
+          </div>
+        </div>
+
+        <div class="coach-details">
+          <div class="detail-item">
+            <span class="label">Âge:</span>
+            <span class="value">{{ coach.age }} ans</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Expérience:</span>
+            <span class="value">{{ coach.years_experience }} ans</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Spécialité:</span>
+            <span class="value specialty">{{ coach.primary_specialty }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Autres compétences:</span>
+            <span class="value">{{ coach.other_specialties }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Disponibilité:</span>
+            <span class="value availability">{{ getAvailabilityText(coach.availability_score) }}</span>
+          </div>
+          <div *ngIf="coach.similarity_score" class="detail-item match">
+            <span class="label">Correspondance:</span>
+            <span class="value">{{ (coach.similarity_score * 100) | number:'1.0-0' }}%</span>
+          </div>
+        </div>
+
+        <div class="coach-stats">
+          <div class="stat">
+            <span class="stat-number">{{ coach.num_clients_last_6m }}</span>
+            <span class="stat-label">clients</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">{{ coach.cert_level }}</span>
+            <span class="stat-label">niveau cert.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bouton de redémarrage -->
+    <div class="restart-section">
+      <button (click)="restartChat()" class="restart-button">
+        🔄 Faire une nouvelle recherche
+      </button>
+    </div>
+  </div>
+</div>

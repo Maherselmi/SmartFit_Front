@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbonnementsService, Abonnement } from '../../../services/abonnements.service';
+import {Abonnement, AbonnementsService} from "../../../services/abonnements.service";
 
 @Component({
   selector: 'app-liste-abonnements',
@@ -7,7 +7,7 @@ import { AbonnementsService, Abonnement } from '../../../services/abonnements.se
   styleUrls: ['./liste-abonnements.component.css']
 })
 export class ListeAbonnementsComponent implements OnInit {
-  
+
   abonnements: Abonnement[] = [];
   selectedAbonnement: Abonnement | null = null;
   showForm = false;
@@ -192,10 +192,10 @@ export class ListeAbonnementsComponent implements OnInit {
   // 🔹 Prédire le prix automatiquement
   predictPrice(): void {
     // Prédire le prix si tous les champs requis sont remplis
-    if (this.abonnementForm.typeAbonnement && 
-        this.abonnementForm.dateDebut && 
+    if (this.abonnementForm.typeAbonnement &&
+        this.abonnementForm.dateDebut &&
         this.abonnementForm.dateFin) {
-      
+
       this.predictingPrice = true;
       this.abonnementsService.predictPrice(
         this.abonnementForm.typeAbonnement,

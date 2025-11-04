@@ -415,38 +415,265 @@
     </nav>
     <!-- partial -->
     <div class="main-panel">
-      <div class="content-wrapper">
-        <h4 class="card-title">Liste Coachs </h4>
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-primary mb-0">Liste des Coachs</h2>
+    
+    <div class="btn-group">
+      <!-- Bouton Planning de tous les coachs -->
+      <button (click)="showAllCoachsPlanning()" class="btn btn-info me-2">
+        <i class="typcn typcn-calendar-outline"></i> Planning de Tous les Coachs
+      </button>
+      
+      <!-- Bouton Ajouter -->
+      <button (click)="addCoach()" class="btn btn-success">
+        <i class="typcn typcn-user-add"></i> Ajouter un Coach
+      </button>
+    </div>
+  </div>
 
-
-        <div class="row">
-          <div class="col-xl-6 grid-margin stretch-card flex-column">
-            <div class="row">
-              <div class="col-md-6 grid-margin stretch-card">
-
-              </div>
-              <div class="col-md-6 grid-margin stretch-card">
-
-              </div>
+  <!-- Tableau des coachs -->
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered">
+      <thead class="table-dark text-center">
+        <tr>
+          <th>ID</th>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Spécialité</th>
+          <th>Email</th>
+          <th>Téléphone</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody class="text-center align-middle">
+        <tr *ngFor="let coach of coachs">
+          <td>{{ coach.id }}</td>
+          <td>{{ coach.nom }}</td>
+          <td>{{ coach.prenom }}</td>
+          <td>{{ coach.specialite }}</td>
+          <td>{{ coach.email }}</td>
+          <td>{{ coach.telephone }}</td>
+          <td>
+            <div class="btn-group" role="group">
+              <button class="btn btn-warning btn-sm me-1"
+                      [routerLink]="['/EditCoach', coach.id]">
+                <i class="typcn typcn-edit"></i> Modifier
+              </button>
+              <button class="btn btn-danger btn-sm me-1"
+                      (click)="deleteCoach(coach.id!)">
+                <i class="typcn typcn-trash"></i> Supprimer
+              </button>
+              <button class="btn btn-info btn-sm" (click)="showPlanning(coach)">
+                <i class="typcn typcn-calendar"></i> Planning
+              </button>
             </div>
-            <div class="row h-100">
+          </td>
+        </tr>
+        
+        <!-- Message si aucun coach -->
+        <tr *ngIf="coachs.length === 0">
+          <td colspan="7" class="text-muted py-4">
+            <i class="typcn typcn-info-large me-2"></i>
+            Aucun coach trouvé
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-              <div class="col-md-6 stretch-card">
+  <!-- Message de succès -->
+  <div *ngIf="successMessage" class="alert alert-success mt-3 text-center">
+    {{ successMessage }}
+  </div>
+</div>
 
-              </div>
-            </div>
+<!-- ================= Modale Planning ================= -->
+<div *ngIf="modalOpen" class="modal-backdrop fade show"></div>
+
+<div class="modal fade" 
+     [class.show]="modalOpen" 
+     [style.display]="modalOpen ? 'block' : 'none'"
+     tabindex="-1"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content shadow-lg border-0 rounded-3">
+      
+      <!-- Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">
+          <i class="typcn typcn-calendar me-2"></i>
+          {{ showAllPlannings ? 'Planning de Tous les Coachs' : 'Planning de ' + getCoachName() }}
+          <small class="ms-2 opacity-75">({{ getPlanning().length }} séances)</small>
+        </h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeModal()" aria-label="Close"></button>
+      </div>
+      
+      <!-- Body -->
+      <div class="modal-body p-4">
+        <!-- Loading -->
+        <div *ngIf="isLoading" class="text-center py-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Chargement...</span>
           </div>
-          <div class="col-xl-6 grid-margin stretch-card flex-column">
-            <div class="row h-100">
-              <div class="col-md-12 stretch-card">
-
-              </div>
-            </div>
-          </div>
+          <p class="mt-2 text-muted">
+            {{ showAllPlannings ? 'Chargement de tous les plannings...' : 'Chargement du planning...' }}
+          </p>
         </div>
 
+        <!-- Planning -->
+        <div *ngIf="!isLoading">
+          <div class="table-responsive">
+            <table class="table table-hover table-bordered text-center align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>Date</th>
+                  <th>Jour</th>
+                  <th>Session</th>
+                  <th>Type de Séance</th>
+                  <th>Durée</th>
+                  <th *ngIf="showAllPlannings">Coach</th> <!-- Colonne supplémentaire pour tous les coachs -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let slot of getPlanning(); let i = index">
+                  <td class="fw-bold text-muted">{{ i + 1 }}</td>
+                  <td class="fw-bold text-primary">{{ formatDate(slot.date) }}</td>
+                  <td class="text-muted fst-italic">{{ getDayName(slot.date) }}</td>
+                  <td>
+                    <span [class]="getBadgeClass(slot)" style="padding: 0.5em 1em; font-size: 0.9em;">
+                      {{ capitalizeFirst(slot.session) || 'Non spécifié' }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="fw-semibold">{{ slot.type_seance || 'Entraînement' }}</span>
+                  </td>
+                  <td>
+                    <span class="text-muted">{{ slot.duree || '60 min' }}</span>
+                  </td>
+                  <td *ngIf="showAllPlannings">
+                    <span class="badge bg-dark">{{ slot.coach_nom || 'Coach inconnu' }}</span>
+                  </td>
+                </tr>
 
+                <!-- Message si aucun planning -->
+                <tr *ngIf="getPlanning().length === 0 && !isLoading">
+                  <td [attr.colspan]="showAllPlannings ? 7 : 6" class="text-muted py-4">
+                    <i class="typcn typcn-info-large me-2"></i>
+                    {{ showAllPlannings ? 'Aucun planning disponible' : 'Aucun planning disponible pour ce coach' }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
+      
+      <!-- Footer -->
+      <div class="modal-footer">
+        <div class="me-auto">
+          <small class="text-muted">
+            Total: <strong>{{ getPlanning().length }}</strong> séances planifiées
+          </small>
+        </div>
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">
+          <i class="typcn typcn-times me-1"></i> Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="modalOpen" class="modal-backdrop fade show"></div>
+
+<div class="modal fade" 
+     [class.show]="modalOpen" 
+     [style.display]="modalOpen ? 'block' : 'none'"
+     tabindex="-1"
+     aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content shadow-lg border-0 rounded-3">
+      
+      <!-- Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">
+          <i class="typcn typcn-calendar me-2"></i>
+          Planning de {{ getCoachName() }}
+          <small class="ms-2 opacity-75">({{ getPlanning().length }} séances)</small>
+        </h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeModal()" aria-label="Close"></button>
+      </div>
+      
+      <!-- Body -->
+      <div class="modal-body p-4">
+        <!-- Loading -->
+        <div *ngIf="isLoading" class="text-center py-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Chargement...</span>
+          </div>
+          <p class="mt-2 text-muted">Chargement du planning...</p>
+        </div>
+
+        <!-- Planning -->
+        <div *ngIf="!isLoading">
+          <div class="table-responsive">
+            <table class="table table-hover table-bordered text-center align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>Date</th>
+                  <th>Jour</th>
+                  <th>Session</th>
+                  <th>Type de Séance</th>
+                  <th>Durée</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let slot of getPlanning(); let i = index">
+                  <td class="fw-bold text-muted">{{ i + 1 }}</td>
+                  <td class="fw-bold text-primary">{{ formatDate(slot.date) }}</td>
+                  <td class="text-muted fst-italic">{{ getDayName(slot.date) }}</td>
+                  <td>
+                    <span [class]="getBadgeClass(slot)" style="padding: 0.5em 1em; font-size: 0.9em;">
+                      {{ capitalizeFirst(slot.session) || 'Non spécifié' }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="fw-semibold">{{ slot.type_seance || 'Entraînement' }}</span>
+                  </td>
+                  <td>
+                    <span class="text-muted">{{ slot.duree || '60 min' }}</span>
+                  </td>
+                </tr>
+
+                <!-- Message si aucun planning -->
+                <tr *ngIf="getPlanning().length === 0 && !isLoading">
+                  <td colspan="6" class="text-muted py-4">
+                    <i class="typcn typcn-info-large me-2"></i>
+                    Aucun planning disponible pour ce coach
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Footer -->
+      <div class="modal-footer">
+        <div class="me-auto">
+          <small class="text-muted">
+            Total: <strong>{{ getPlanning().length }}</strong> séances planifiées
+          </small>
+        </div>
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">
+          <i class="typcn typcn-times me-1"></i> Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
       <!-- content-wrapper ends -->
       <!-- partial:partials/_footer.html -->
       <footer class="footer">

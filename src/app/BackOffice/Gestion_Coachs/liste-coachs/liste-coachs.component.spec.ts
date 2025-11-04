@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ListeCoachsComponent } from './liste-coachs.component';
+import { CoachListComponent } from './liste-coachs.component';
 
 describe('ListeCoachsComponent', () => {
-  let component: ListeCoachsComponent;
-  let fixture: ComponentFixture<ListeCoachsComponent>;
+  let component: CoachListComponent;
+  let fixture: ComponentFixture<CoachListComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ListeCoachsComponent]
+      declarations: [CoachListComponent]
     });
-    fixture = TestBed.createComponent(ListeCoachsComponent);
+    fixture = TestBed.createComponent(CoachListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

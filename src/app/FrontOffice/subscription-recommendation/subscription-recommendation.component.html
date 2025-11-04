@@ -13,14 +13,15 @@
             </a>
             <nav class="main_nav">
               <ul class="d-flex flex-row align-items-center justify-content-start">
-                <li><a routerLink="/Index">Home</a></li>
-                <li class="active"><a routerLink="/subscription-recommendation">Abonnements</a></li>
+                  <li><a routerLink="/Index">Home</a></li>
+                  <li><a routerLink="/PlanningClient">Planning</a></li>
+                  <li><a routerLink="/FitnessProgression">Fitness_Progress</a></li>
+                  <li><a routerLink="/subscription-recommendation">Abonnements</a></li>
+                  <li><a routerLink="/ClientForm">plan_alimentaire</a></li>
+
               </ul>
             </nav>
-            <div class="phone d-flex flex-row align-items-center justify-content-start ml-auto">
-              <i class="fa fa-phone" aria-hidden="true"></i>
-              <div>652-345 3222 11</div>
-            </div>
+
           </div>
         </div>
       </div>
@@ -87,10 +88,10 @@
           <form (ngSubmit)="onSubmit()" #recommendationForm="ngForm" class="subscription_form">
             <div class="form_row">
               <div class="form_label">Niveau d'activité physique *</div>
-              <select 
-                class="form_input" 
-                [(ngModel)]="activityLevel" 
-                name="activityLevel" 
+              <select
+                class="form_input"
+                [(ngModel)]="activityLevel"
+                name="activityLevel"
                 required>
                 <option value="" disabled selected>Sélectionnez votre niveau d'activité</option>
                 <option *ngFor="let level of activityLevels" [value]="level.value">
@@ -101,10 +102,10 @@
 
             <div class="form_row">
               <div class="form_label">Style de vie *</div>
-              <select 
-                class="form_input" 
-                [(ngModel)]="lifestyle" 
-                name="lifestyle" 
+              <select
+                class="form_input"
+                [(ngModel)]="lifestyle"
+                name="lifestyle"
                 required>
                 <option value="" disabled selected>Sélectionnez votre style de vie</option>
                 <option *ngFor="let life of lifestyles" [value]="life.value">
@@ -115,18 +116,18 @@
 
             <div class="form_row">
               <div class="form_label">Informations supplémentaires (optionnel)</div>
-              <textarea 
-                class="form_input form_textarea" 
-                [(ngModel)]="additionalInfo" 
-                name="additionalInfo" 
-                rows="4" 
+              <textarea
+                class="form_input form_textarea"
+                [(ngModel)]="additionalInfo"
+                name="additionalInfo"
+                rows="4"
                 placeholder="Décrivez vos objectifs, contraintes, préférences ou toute autre information pertinente..."></textarea>
             </div>
 
             <div class="form_actions">
-              <button 
-                type="submit" 
-                class="button form_button" 
+              <button
+                type="submit"
+                class="button form_button"
                 [disabled]="loading || !activityLevel || !lifestyle">
                 <span *ngIf="loading">Génération en cours...</span>
                 <span *ngIf="!loading">Générer mes offres</span>

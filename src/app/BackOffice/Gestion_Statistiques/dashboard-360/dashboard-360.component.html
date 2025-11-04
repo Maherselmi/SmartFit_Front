@@ -1,0 +1,171 @@
+<div class="dashboard360 container">
+
+  <!-- HEADER -->
+  <header class="header-row">
+    <h1>💪 SmartFit — Tableau de Bord 360°</h1>
+    <button class="refresh-btn" (click)="refreshAll()">🔄 Rafraîchir</button>
+  </header>
+
+  <!-- STATISTIQUES PRINCIPALES -->
+  <section class="stats-summary-grid">
+    <div class="stat-card modern-card">
+      <div class="stat-icon">👥</div>
+      <div>
+        <div class="stat-title">Membres actifs</div>
+        <div class="stat-value">{{ clients?.length || 0 }}</div>
+      </div>
+    </div>
+
+    <div class="stat-card modern-card">
+      <div class="stat-icon">📈</div>
+      <div>
+        <div class="stat-title">Progression moyenne</div>
+        <div class="stat-value">{{ averageProgression | number: '1.1-1' }}%</div>
+      </div>
+    </div>
+
+    <div class="stat-card modern-card">
+      <div class="stat-icon">⚙️</div>
+      <div>
+        <div class="stat-title">Recommandations</div>
+        <div class="stat-value">
+          {{ loadingRecommendations ? '⏳ En cours' : '✅ Prêtes' }}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRAPHIQUE DE PROGRESSION -->
+  <section class="chart-section">
+    <h2>📊 Progression des membres</h2>
+    <canvas id="progressChart"></canvas>
+  </section>
+
+  <!-- SUIVI PERSONNALISÉ -->
+  <section class="members-section">
+    <h2>🏋️ Suivi des membres</h2>
+
+    <div *ngIf="loading" class="note">Chargement...</div>
+    <div *ngIf="!loading && (!clients || clients.length === 0)" class="note">
+      Aucun membre trouvé.
+    </div>
+
+    <div *ngFor="let c of clients" class="member-card">
+      <div class="member-top">
+        <div>
+          <div class="member-name">{{ c.nom }}</div>
+          <div class="member-meta">
+            {{ c.age ? c.age + ' ans' : 'Âge non défini' }} • {{ c.objectif || 'Aucun objectif' }}
+          </div>
+        </div>
+        <div class="member-actions">
+          <button (click)="toggleTraining(c)">🏋️ Programme</button>
+          <button (click)="toggleDiet(c)">🥗 Régime</button>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" [style.width.%]="(c.progression_estimee ?? 0) * 100"></div>
+        </div>
+        <div class="progress-text">
+          {{ ((c.progression_estimee ?? 0) * 100) | number: '1.1-1' }}%
+        </div>
+      </div>
+
+      <!-- PROGRAMME D’ENTRAÎNEMENT -->
+      <div *ngIf="c.showTraining" class="details">
+        <h5>🏋️ Programme d'entraînement</h5>
+        <p><strong>Durée totale par semaine :</strong> {{ getTrainingFor(c.nom)?.duree_semaine || 0 }} min</p>
+        <p><strong>Niveau :</strong> {{ getTrainingFor(c.nom)?.niveau || 'Non défini' }}</p>
+        <ul>
+          <li *ngFor="let ex of getTrainingFor(c.nom)?.exercices">{{ ex }}</li>
+        </ul>
+      </div>
+
+      <!-- PLAN ALIMENTAIRE -->
+      <div *ngIf="c.showDiet" class="details">
+        <h5>🥗 Plan alimentaire</h5>
+        <p><strong>Calories totales :</strong> {{ getDietFor(c.nom)?.calories_totales || 0 }}</p>
+        <div *ngFor="let repas of getDietFor(c.nom)?.repas">
+          <p><strong>{{ repas.nom }}</strong></p>
+          <ul>
+            <li *ngFor="let aliment of repas.aliments">{{ aliment }}</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SUPPORT DÉCISIONNEL -->
+  <section class="decision-section">
+    <h2 class="section-title">🤖 Support décisionnel intelligent</h2>
+
+    <div class="decision-grid">
+      <!-- Fidélité -->
+      <div class="decision-card fidelity-card">
+        <div class="card-header">
+          <div class="icon">🤝</div>
+          <h4>Fidélité</h4>
+        </div>
+        <div class="card-body">
+          <div *ngIf="decisionSupport.actions_fidelite.length; else noFidelite">
+            <div
+              *ngFor="let action of decisionSupport.actions_fidelite"
+              class="action-card"
+            >
+              <p>{{ action }}</p>
+            </div>
+          </div>
+          <ng-template #noFidelite>
+            <div class="empty-message">Aucune action suggérée.</div>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- Santé -->
+      <div class="decision-card health-card">
+        <div class="card-header">
+          <div class="icon">💖</div>
+          <h4>Santé</h4>
+        </div>
+        <div class="card-body">
+          <div *ngIf="decisionSupport.actions_sante.length; else noSante">
+            <div
+              *ngFor="let action of decisionSupport.actions_sante"
+              class="action-card"
+            >
+              <p>{{ action }}</p>
+            </div>
+          </div>
+          <ng-template #noSante>
+            <div class="empty-message">Aucune action suggérée.</div>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- Rentabilité -->
+      <div class="decision-card profit-card">
+        <div class="card-header">
+          <div class="icon">💰</div>
+          <h4>Rentabilité</h4>
+        </div>
+        <div class="card-body">
+          <div *ngIf="decisionSupport.actions_rentabilite.length; else noRentabilite">
+            <div
+              *ngFor="let action of decisionSupport.actions_rentabilite"
+              class="action-card"
+            >
+              <p>{{ action }}</p>
+            </div>
+          </div>
+          <ng-template #noRentabilite>
+            <div class="empty-message">Aucune action suggérée.</div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>

@@ -1,0 +1,33 @@
+body {
+  background: linear-gradient(135deg, #e0f2ff, #ffffff);
+}
+
+.card {
+  border: none;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.form-label {
+  color: #333;
+}
+
+.btn-primary {
+  background: #007bff;
+  border: none;
+  transition: 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #0056b3;
+}
+
+.btn-outline-secondary:hover {
+  background: #6c757d;
+  color: #fff;
+}

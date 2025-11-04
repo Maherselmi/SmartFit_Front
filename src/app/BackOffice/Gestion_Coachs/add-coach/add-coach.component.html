@@ -1,7 +1,4 @@
-<div class="row" id="proBanner">
-
-
-</div>
+<div class="row" id="proBanner"></div>
 <div class="container-scroller">
   <!-- partial:partials/_navbar.html -->
   <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -161,13 +158,15 @@
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
       <ul class="navbar-nav mr-lg-2">
         <li class="nav-item ml-0">
-          <h4 class="mb-0">Dashboard</h4>
+          <h4 class="mb-0">{{ isEditMode ? 'Modifier un Coach' : 'Ajouter un Coach' }}</h4>
         </li>
         <li class="nav-item">
           <div class="d-flex align-items-baseline">
             <p class="mb-0">Home</p>
             <i class="typcn typcn-chevron-right"></i>
-            <p class="mb-0">Main Dahboard</p>
+            <p class="mb-0">Gestion Coachs</p>
+            <i class="typcn typcn-chevron-right"></i>
+            <p class="mb-0">{{ isEditMode ? 'Modifier' : 'Ajouter' }}</p>
           </div>
         </li>
       </ul>
@@ -371,7 +370,6 @@
             <span class="menu-title">Gestion Client</span>
             <i class="menu-arrow"></i>
           </a>
-
         </li>
         <li class="nav-item">
           <a class="nav-link" data-toggle="collapse" routerLink="/Liste-Coaches" aria-expanded="false" aria-controls="form-elements">
@@ -379,7 +377,6 @@
             <span class="menu-title">Gestion Coachs</span>
             <i class="menu-arrow"></i>
           </a>
-
         </li>
         <li class="nav-item">
           <a class="nav-link" data-toggle="collapse" routerLink="/Liste-Planning" aria-expanded="false" aria-controls="charts">
@@ -387,7 +384,6 @@
             <span class="menu-title">Gestion Planning</span>
             <i class="menu-arrow"></i>
           </a>
-
         </li>
         <li class="nav-item">
           <a class="nav-link" data-toggle="collapse" routerLink="/Liste-Abonnements" aria-expanded="false" aria-controls="tables">
@@ -395,9 +391,7 @@
             <span class="menu-title">Abonnements</span>
             <i class="menu-arrow"></i>
           </a>
-
         </li>
-
         <li class="nav-item">
           <a class="nav-link" data-toggle="collapse" routerLink="/Liste-Nutritionnelle" aria-expanded="false" aria-controls="error">
             <i class="typcn typcn-globe-outline menu-icon"></i>
@@ -416,35 +410,94 @@
     <!-- partial -->
     <div class="main-panel">
       <div class="content-wrapper">
-        <h4 class="card-title">Statistiques </h4>
+        <div class="container py-5">
+          <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-5">
+              <h2 class="text-center mb-4 text-primary">
+                {{ isEditMode ? '✏️ Modifier un Coach' : '➕ Ajouter un Coach' }}
+              </h2>
 
-        <div class="row">
-          <div class="col-xl-6 grid-margin stretch-card flex-column">
-            <div class="row">
-              <div class="col-md-6 grid-margin stretch-card">
-
+              <!-- ✅ Alerte succès -->
+              <div *ngIf="successMessage" class="alert alert-success text-center" role="alert">
+                {{ successMessage }}
               </div>
-              <div class="col-md-6 grid-margin stretch-card">
 
-              </div>
-            </div>
-            <div class="row h-100">
+              <form (ngSubmit)="onSubmit()" #coachForm="ngForm">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Nom</label>
+                    <input
+                      type="text"
+                      class="form-control form-control-lg"
+                      placeholder="Entrez le nom"
+                      [(ngModel)]="coach.nom"
+                      name="nom"
+                      required
+                    />
+                  </div>
 
-              <div class="col-md-6 stretch-card">
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Prénom</label>
+                    <input
+                      type="text"
+                      class="form-control form-control-lg"
+                      placeholder="Entrez le prénom"
+                      [(ngModel)]="coach.prenom"
+                      name="prenom"
+                      required
+                    />
+                  </div>
 
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-6 grid-margin stretch-card flex-column">
-            <div class="row h-100">
-              <div class="col-md-12 stretch-card">
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Spécialité</label>
+                    <input
+                      type="text"
+                      class="form-control form-control-lg"
+                      placeholder="Ex: Fitness, Yoga..."
+                      [(ngModel)]="coach.specialite"
+                      name="specialite"
+                      required
+                    />
+                  </div>
 
-              </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Email</label>
+                    <input
+                      type="email"
+                      class="form-control form-control-lg"
+                      placeholder="coach@email.com"
+                      [(ngModel)]="coach.email"
+                      name="email"
+                      required
+                    />
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Téléphone</label>
+                    <input
+                      type="text"
+                      class="form-control form-control-lg"
+                      placeholder="Ex: +216 50 123 456"
+                      [(ngModel)]="coach.telephone"
+                      name="telephone"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="text-center mt-5">
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-lg px-4 shadow-sm"
+                    [disabled]="coachForm.invalid"
+                  >
+                    {{ isEditMode ? '💾 Mettre à jour' : '✅ Créer' }}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
-
-
       </div>
       <!-- content-wrapper ends -->
       <!-- partial:partials/_footer.html -->

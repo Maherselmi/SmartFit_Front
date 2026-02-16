@@ -9,10 +9,17 @@ import { ChatResponse, RecommendationResponse } from '../Models/chat.model';
 export class ChatService {
 
   // ✅ Adresse de ton backend Flask pour le chat personnalisé
+<<<<<<< HEAD
   private chatApiUrl = 'http://127.0.0.1:5001/chat';
 
   // ✅ Adresse de ton backend Flask pour start-chat & answer
   private apiUrl = 'http://127.0.0.1:5001/api';
+=======
+  private chatApiUrl = 'http://127.0.0.1:5000/chat';
+
+  // ✅ Adresse de ton backend Flask pour start-chat & answer
+  private apiUrl = 'http://127.0.0.1:5000/api';
+>>>>>>> 2eb60c76dd666b104ac0c3a54a2fa01bcd4b3999
 
   constructor(private http: HttpClient) {}
 

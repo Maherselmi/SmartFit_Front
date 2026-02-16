@@ -128,7 +128,11 @@ export class MealPlanService {
   // ✅ Generate meal plan from Flask AI backend
   // ✅ Generate meal plan from Flask AI backend - UPDATED
   generateFlaskMealPlan(client: any): Observable<any> {
+<<<<<<< HEAD
     const flaskUrl = 'http://localhost:5003/generate_meal_plan';
+=======
+    const flaskUrl = 'http://localhost:5000/generate_meal_plan';
+>>>>>>> 2eb60c76dd666b104ac0c3a54a2fa01bcd4b3999
     console.log("📡 Sending data to Flask:", client);
 
     return this.http.post(flaskUrl, {

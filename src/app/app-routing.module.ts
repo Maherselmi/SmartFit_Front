@@ -47,8 +47,12 @@ const routes: Routes = [
   {path: 'CoachFormComponent', component: CoachFormComponent},
   {path:'EditCoach/:id', component: EditCoachComponent},
   {path:'ListeCoach', component:CoachListComponent},
+<<<<<<< HEAD
   {path:'Chatgpt', component:ChatComponent},
   {path:'listeabn', component:ListeAbonnementsComponent}
+=======
+  {path:'Chatgpt', component:ChatComponent}
+>>>>>>> 2eb60c76dd666b104ac0c3a54a2fa01bcd4b3999
 
 
 

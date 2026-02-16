@@ -1,12 +1,20 @@
 <!-- Bouton flottant du chat -->
 <div class="chat-toggle" (click)="toggleChat()">
+<<<<<<< HEAD
   <img src="assets/FrontOffice/images/coach.png" alt="Coach" />
+=======
+  <img src="assets/BackOffice/images/coach.png" alt="Coach" />
+>>>>>>> 2eb60c76dd666b104ac0c3a54a2fa01bcd4b3999
 </div>
 
 <!-- Fenêtre du chat -->
 <div class="chat-window" [class.open]="isOpen">
   <div class="chat-header">
+<<<<<<< HEAD
     <img src="assets/FrontOffice/images/coach.png" alt="Coach" />
+=======
+    <img src="assets/BackOffice/images/coach.png" alt="Coach" />
+>>>>>>> 2eb60c76dd666b104ac0c3a54a2fa01bcd4b3999
     <span>Coach Virtuel 💬</span>
     <button class="close-btn" (click)="toggleChat()">✖</button>
   </div>
@@ -14,8 +22,13 @@
   <div #chatBox class="chat-box">
     <div *ngFor="let msg of messages" [ngClass]="['message', msg.from]">
       <div class="avatar">
+<<<<<<< HEAD
         <img *ngIf="msg.from === 'user'" src="assets/FrontOffice/images/client.png" alt="User" />
         <img *ngIf="msg.from === 'bot'" src="assets/FrontOffice/images/coach.png" alt="Coach" />
+=======
+        <img *ngIf="msg.from === 'user'" src="assets/BackOffice/images/client.png" alt="User" />
+        <img *ngIf="msg.from === 'bot'" src="assets/BackOffice/images/coach.png" alt="Coach" />
+>>>>>>> 2eb60c76dd666b104ac0c3a54a2fa01bcd4b3999
       </div>
       <div class="bubble" [ngClass]="msg.from">
         <div *ngIf="!msg.typing" [innerHTML]="formatBotText(msg.text)" class="bot-text"></div>

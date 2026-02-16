@@ -41,8 +41,13 @@ export interface PricePredictionResponse {
 })
 export class AbonnementsService {
 
+<<<<<<< HEAD
   private apiUrl = 'http://localhost:9090/api/abonnements';
   private predictionApiUrl = 'https://dolmenic-unsuiting-rich.ngrok-free.dev/predict';
+=======
+  private apiUrl = 'http://localhost:9090/api/abonnements'; 
+  private predictionApiUrl = 'http://localhost:5552/predict';
+>>>>>>> 2eb60c76dd666b104ac0c3a54a2fa01bcd4b3999
 
   constructor(private http: HttpClient) { }
 

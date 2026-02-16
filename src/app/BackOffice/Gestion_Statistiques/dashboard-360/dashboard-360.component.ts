@@ -2,8 +2,11 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import Chart from "chart.js/auto";
+<<<<<<< HEAD
 import {FormsModule} from "@angular/forms";
 import {RouterLink} from "@angular/router";
+=======
+>>>>>>> 2eb60c76dd666b104ac0c3a54a2fa01bcd4b3999
 
 interface Client {
   nom: string;
@@ -19,7 +22,11 @@ interface Client {
   standalone: true,
   templateUrl: './dashboard-360.component.html',
   styleUrls: ['./dashboard-360.component.css'],
+<<<<<<< HEAD
   imports: [CommonModule, HttpClientModule, FormsModule, RouterLink],
+=======
+  imports: [CommonModule, HttpClientModule],
+>>>>>>> 2eb60c76dd666b104ac0c3a54a2fa01bcd4b3999
 })
 export class Dashboard360Component implements OnInit, AfterViewInit {
   clients: Client[] = [];
@@ -72,6 +79,7 @@ export class Dashboard360Component implements OnInit, AfterViewInit {
           showDiet: false,
           progression_estimee: c.progression_estimee ?? 0,
         }));
+<<<<<<< HEAD
         console.log('📊 Données reçues :', this.clients);
 
         this.calculateAverageProgression();
@@ -80,6 +88,11 @@ export class Dashboard360Component implements OnInit, AfterViewInit {
         // ✅ Crée le graphique une fois que les clients sont bien chargés
         this.createChart();
 
+=======
+
+        this.calculateAverageProgression();
+        this.loadIndividualRecommendations();
+>>>>>>> 2eb60c76dd666b104ac0c3a54a2fa01bcd4b3999
         this.loading = false;
       },
       error: (err) => {
@@ -90,7 +103,10 @@ export class Dashboard360Component implements OnInit, AfterViewInit {
     });
   }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2eb60c76dd666b104ac0c3a54a2fa01bcd4b3999
   // -------------------------------
   // 📊 Calcul de la moyenne
   // -------------------------------

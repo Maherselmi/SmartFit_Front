@@ -59,4 +59,8 @@ export class CoachService {
   predictPerformance(clientCount: number): Observable<any> {
     return this.http.post<any>(`${this.aiUrl}/predict_performance`, { client_count: clientCount });
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 2eb60c76dd666b104ac0c3a54a2fa01bcd4b3999

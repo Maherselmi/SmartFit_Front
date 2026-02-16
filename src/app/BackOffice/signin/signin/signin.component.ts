@@ -45,7 +45,11 @@ export class SigninComponent {
       next: (response) => {
         console.log('Client connecté:', response);
         // Exemple : rediriger vers le dashboard client
+<<<<<<< HEAD
         this.router.navigate(['/Index']);
+=======
+        this.router.navigate(['/Dashboard']);
+>>>>>>> 2eb60c76dd666b104ac0c3a54a2fa01bcd4b3999
       },
       error: (err) => {
         console.error('Erreur de connexion client:', err);

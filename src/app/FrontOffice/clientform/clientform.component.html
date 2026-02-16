@@ -1,0 +1,413 @@
+
+<header class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="header_content d-flex flex-row align-items-center justify-content-start trans_400">
+                    <a routerLink="/Index">
+                        <div class="logo d-flex flex-row align-items-center justify-content-start">
+                            <img src="assets/FrontOffice/images/dot.png" alt="">
+                            <div>Smart<span>Fit</span></div>
+                        </div>
+                    </a>
+                    <nav class="main_nav">
+                        <ul class="d-flex flex-row align-items-center justify-content-start">
+                            <li><a routerLink="/Index">Home</a></li>
+                            <li><a routerLink="/PlanningClient">Planning</a></li>
+                            <li><a routerLink="/FitnessProgression">Fitness_Progress</a></li>
+                            <li><a routerLink="/subscription-recommendation">Abonnements</a></li>
+                            <li><a routerLink="/ClientForm">plan_alimentaire</a></li>
+                          <li><a routerLink="/Chatgpt">Assistant_Coachs</a></li>
+
+
+                        </ul>
+                    </nav>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container mt-4">
+  <!-- Header -->
+  <div class="text-center mb-5">
+    <h1 class="display-5 fw-bold text-primary">🍎 SmartFit AI</h1>
+    <p class="lead text-muted">Générez Votre Plan Alimentaire Personnalisé</p>
+
+    <!-- Current Client Info -->
+    <div class="alert alert-info">
+      <i class="fas fa-user me-2"></i> Connecté en tant que: <strong>{{ currentClientName }}</strong> (ID: {{ currentClientId }})
+    </div>
+  </div>
+
+  <!-- Objective Selection Form -->
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3">
+          <h4 class="card-title mb-0">
+            <i class="fas fa-bullseye me-2 text-primary"></i> Choisissez Votre Objectif
+          </h4>
+        </div>
+
+        <div class="card-body p-4">
+          <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
+
+            <!-- Goal Selection -->
+            <div class="mb-4">
+              <label for="objectif" class="form-label fw-semibold fs-5">
+                Quel est votre objectif principal ? <span class="text-danger">*</span>
+              </label>
+              <select class="form-select form-select-lg" id="objectif" formControlName="objectif" [class.is-invalid]="hasError('objectif', 'required')">
+                <option value="" disabled selected>👉 Sélectionnez votre objectif</option>
+                <option *ngFor="let obj of OBJECTIFS" [value]="obj.value">
+                  {{ obj.label }}
+                </option>
+              </select>
+
+              <div *ngIf="hasError('objectif', 'required')" class="invalid-feedback">
+                Veuillez sélectionner un objectif pour générer votre plan
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-success btn-lg py-3" [disabled]="!canSubmit">
+                                <span *ngIf="!isLoading; else loading">
+                                    <i class="fas fa-robot me-2"></i>Générer Mon Plan IA
+                                </span>
+                <ng-template #loading>
+                  <i class="fas fa-spinner fa-spin me-2"></i>Notre IA travaille...
+                </ng-template>
+              </button>
+
+              <button type="button" class="btn btn-outline-secondary" (click)="resetForm()" [disabled]="isLoading">
+                <i class="fas fa-redo me-2"></i>Changer d'objectif
+              </button>
+
+              <!-- Bouton de test -->
+              <button type="button" class="btn btn-outline-warning" (click)="testWithSampleData()" [disabled]="isLoading">
+                <i class="fas fa-vial me-2"></i>Tester avec données exemple
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Loading Indicator -->
+      <div *ngIf="isLoading" class="text-center mt-4">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+        <p class="mt-3 text-muted fs-5">
+          <i class="fas fa-brain me-2"></i> Notre intelligence artificielle analyse votre profil et prépare un plan sur mesure...
+        </p>
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="alert alert-danger mt-4" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <strong>Erreur:</strong> {{ errorMessage }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Debug Information -->
+
+
+  <!-- Generated Meal Plan -->
+  <div *ngIf="mealPlan" class="row justify-content-center mt-5">
+    <div class="col-lg-12">
+      <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white py-4">
+          <div class="d-flex justify-content-between align-items-center">
+            <h3 class="card-title mb-0">
+              <i class="fas fa-chart-line me-2"></i> Votre Plan Alimentaire IA - {{ mealPlan.nom }}
+            </h3>
+            <span class="badge bg-light text-primary fs-6">
+                            🤖 Généré par IA Flask
+                        </span>
+          </div>
+        </div>
+
+        <div class="card-body p-4">
+          <!-- Nutrition Summary -->
+          <div class="row g-3 mb-5">
+            <div class="col-md-3">
+              <div class="card bg-info text-white h-100">
+                <div class="card-body text-center p-3">
+                  <i class="fas fa-fire fa-2x mb-2"></i>
+                  <h5>Calories Journalières</h5>
+                  <h3 class="mb-0">{{ mealPlan.totalCaloriesCible | number:'1.0-0' }} kcal</h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="card bg-success text-white h-100">
+                <div class="card-body text-center p-3">
+                  <i class="fas fa-drumstick-bite fa-2x mb-2"></i>
+                  <h5>Protéines</h5>
+                  <h3 class="mb-0">{{ mealPlan.proteinesCible | number:'1.0-0' }}g</h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="card bg-warning text-white h-100">
+                <div class="card-body text-center p-3">
+                  <i class="fas fa-bread-slice fa-2x mb-2"></i>
+                  <h5>Glucides</h5>
+                  <h3 class="mb-0">{{ mealPlan.glucidesCible | number:'1.0-0' }}g</h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="card bg-danger text-white h-100">
+                <div class="card-body text-center p-3">
+                  <i class="fas fa-seedling fa-2x mb-2"></i>
+                  <h5>Lipides</h5>
+                  <h3 class="mb-0">{{ mealPlan.lipidesCible | number:'1.0-0' }}g</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Daily Meals - ORGANIZED BY MEAL TYPE -->
+          <div *ngIf="mealPlan.repas && mealPlan.repas.length > 0">
+
+            <!-- Petit-déjeuner -->
+            <div *ngIf="getMealsByType('PETIT_DEJEUNER').length > 0" class="mb-5">
+              <h4 class="text-success mb-4">
+                <i class="fas fa-sun me-2"></i> Petit-déjeuner
+              </h4>
+              <div class="row g-4">
+                <div *ngFor="let repas of getMealsByType('PETIT_DEJEUNER')" class="col-12">
+                  <div class="card border-success border-2">
+                    <div class="card-header bg-success text-white">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">🍳 {{ repas.type | titlecase }}</h5>
+                        <span class="badge bg-light text-success fs-6">
+                                                    {{ repas.caloriesTotales | number:'1.0-0' }} kcal
+                                                </span>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div class="row mb-3">
+                        <div class="col-md-3">
+                          <small class="text-muted">
+                            <i class="fas fa-drumstick-bite me-1"></i>
+                            Protéines: <strong>{{ repas.proteinesTotales | number:'1.1-1' }}g</strong>
+                          </small>
+                        </div>
+                        <div class="col-md-3">
+                          <small class="text-muted">
+                            <i class="fas fa-bread-slice me-1"></i>
+                            Glucides: <strong>{{ repas.glucidesTotales | number:'1.1-1' }}g</strong>
+                          </small>
+                        </div>
+                        <div class="col-md-3">
+                          <small class="text-muted">
+                            <i class="fas fa-seedling me-1"></i>
+                            Lipides: <strong>{{ repas.lipidesTotales | number:'1.1-1' }}g</strong>
+                          </small>
+                        </div>
+                      </div>
+
+                      <!-- Food Items -->
+                      <div *ngIf="repas.composants && repas.composants.length > 0">
+                        <h6 class="text-dark mb-3">🥐 Composition du repas:</h6>
+                        <div class="row g-3">
+                          <div *ngFor="let composant of repas.composants" class="col-md-6 col-lg-4">
+                            <div class="card border-0 bg-light h-100">
+                              <div class="card-body text-center p-3">
+                                <strong class="text-success d-block">{{ composant.aliment.nom }}</strong>
+                                <small class="text-muted">
+                                  {{ composant.quantite }}g • {{ composant.calories | number:'1.0-0' }} kcal
+                                </small>
+                                <div class="mt-2">
+                                  <small class="text-muted me-3">
+                                    <i class="fas fa-drumstick-bite me-1"></i>P: {{ composant.proteines | number:'1.1-1' }}g
+                                  </small>
+                                  <small class="text-muted me-3">
+                                    <i class="fas fa-bread-slice me-1"></i>G: {{ composant.glucides | number:'1.1-1' }}g
+                                  </small>
+                                  <small class="text-muted">
+                                    <i class="fas fa-seedling me-1"></i>L: {{ composant.lipides | number:'1.1-1' }}g
+                                  </small>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- No Foods Message -->
+                      <div *ngIf="!repas.composants || repas.composants.length === 0" class="alert alert-warning mt-3">
+                        <small>
+                          <i class="fas fa-info-circle me-1"></i>
+                          Aucun aliment détaillé disponible pour ce repas.
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Déjeuner -->
+            <div *ngIf="getMealsByType('DEJEUNER').length > 0" class="mb-5">
+              <h4 class="text-warning mb-4">
+                <i class="fas fa-utensils me-2"></i> Déjeuner
+              </h4>
+              <div class="row g-4">
+                <div *ngFor="let repas of getMealsByType('DEJEUNER')" class="col-12">
+                  <div class="card border-warning border-2">
+                    <div class="card-header bg-warning text-white">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">🍲 {{ repas.type | titlecase }}</h5>
+                        <span class="badge bg-light text-warning fs-6">
+                                                    {{ repas.caloriesTotales | number:'1.0-0' }} kcal
+                                                </span>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div class="row mb-3">
+                        <div class="col-md-3">
+                          <small class="text-muted">
+                            <i class="fas fa-drumstick-bite me-1"></i>
+                            Protéines: <strong>{{ repas.proteinesTotales | number:'1.1-1' }}g</strong>
+                          </small>
+                        </div>
+                        <div class="col-md-3">
+                          <small class="text-muted">
+                            <i class="fas fa-bread-slice me-1"></i>
+                            Glucides: <strong>{{ repas.glucidesTotales | number:'1.1-1' }}g</strong>
+                          </small>
+                        </div>
+                        <div class="col-md-3">
+                          <small class="text-muted">
+                            <i class="fas fa-seedling me-1"></i>
+                            Lipides: <strong>{{ repas.lipidesTotales | number:'1.1-1' }}g</strong>
+                          </small>
+                        </div>
+                      </div>
+
+                      <div *ngIf="repas.composants && repas.composants.length > 0">
+                        <h6 class="text-dark mb-3">🍛 Composition du repas:</h6>
+                        <div class="row g-3">
+                          <div *ngFor="let composant of repas.composants" class="col-md-6 col-lg-4">
+                            <div class="card border-0 bg-light h-100">
+                              <div class="card-body text-center p-3">
+                                <strong class="text-warning d-block">{{ composant.aliment.nom }}</strong>
+                                <small class="text-muted">
+                                  {{ composant.quantite }}g • {{ composant.calories | number:'1.0-0' }} kcal
+                                </small>
+                                <div class="mt-2">
+                                  <small class="text-muted me-3">
+                                    <i class="fas fa-drumstick-bite me-1"></i>P: {{ composant.proteines | number:'1.1-1' }}g
+                                  </small>
+                                  <small class="text-muted me-3">
+                                    <i class="fas fa-bread-slice me-1"></i>G: {{ composant.glucides | number:'1.1-1' }}g
+                                  </small>
+                                  <small class="text-muted">
+                                    <i class="fas fa-seedling me-1"></i>L: {{ composant.lipides | number:'1.1-1' }}g
+                                  </small>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- No Foods Message -->
+                      <div *ngIf="!repas.composants || repas.composants.length === 0" class="alert alert-warning mt-3">
+                        <small>
+                          <i class="fas fa-info-circle me-1"></i>
+                          Aucun aliment détaillé disponible pour ce repas.
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dîner -->
+            <div *ngIf="getMealsByType('DINER').length > 0" class="mb-5">
+              <h4 class="text-primary mb-4">
+                <i class="fas fa-moon me-2"></i> Dîner
+              </h4>
+              <div class="row g-4">
+                <div *ngFor="let repas of getMealsByType('DINER')" class="col-12">
+                  <div class="card border-primary border-2">
+                    <div class="card-header bg-primary text-white">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">🍽️ {{ repas.type | titlecase }}</h5>
+                        <span class="badge bg-light text-primary fs-6">
+                                                    {{ repas.caloriesTotales | number:'1.0-0' }} kcal
+                                                </span>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div class="row mb-3">
+                        <div class="col-md-3">
+                          <small class="text-muted">
+                            <i class="fas fa-drumstick-bite me-1"></i>
+                            Protéines: <strong>{{ repas.proteinesTotales | number:'1.1-1' }}g</strong>
+                          </small>
+                        </div>
+                        <div class="col-md-3">
+                          <small class="text-muted">
+                            <i class="fas fa-bread-slice me-1"></i>
+                            Glucides: <strong>{{ repas.glucidesTotales | number:'1.1-1' }}g</strong>
+                          </small>
+                        </div>
+                        <div class="col-md-3">
+                          <small class="text-muted">
+                            <i class="fas fa-seedling me-1"></i>
+                            Lipides: <strong>{{ repas.lipidesTotales | number:'1.1-1' }}g</strong>
+                          </small>
+                        </div>
+                      </div>
+
+                      <div *ngIf="repas.composants && repas.composants.length > 0">
+                        <h6 class="text-dark mb-3">🥗 Composition du repas:</h6>
+                        <div class="row g-3">
+                          <div *ngFor="let composant of repas.composants" class="col-md-6 col-lg-4">
+                            <div class="card border-0 bg-light h-100">
+                              <div class="card-body text-center p-3">
+                                <strong class="text-primary d-block">{{ composant.aliment.nom }}</strong>
+                                <small class="text-muted">
+                                  {{ composant.quantite }}g • {{ composant.calories | number:'1.0-0' }} kcal
+                                </small>
+                                <div class="mt-2">
+                                  <small class="text-muted me-3">
+                                    <i class="fas fa-drumstick-bite me-1"></i>P: {{ composant.proteines | number:'1.1-1' }}g
+                                  </small>
+                                  <small class="text-muted me-3">
+                                    <i class="fas fa-bread-slice me-1"></i>G: {{ composant.glucides | number:'1.1-1' }}g
+                                  </small>
+                                  <small class="text-muted">
+                                    <i class="fas fa-seedling me-1"></i>L: {{ composant.lipides | number:'1.1-1' }}g
+                                  </small>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- No Foods Message -->
+                      <div *ngIf="!repas.composants || repas.composants.length === 0" class="alert alert-warning mt-3">
+                        <small>
+                          <i class="fas fa-info-circle me-1"></i>
+                          Aucun aliment détaillé disponible pour ce repas.
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div></div></div></div></div></div></div>

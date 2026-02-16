@@ -1,0 +1,765 @@
+<div class="super_container">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="header_content d-flex flex-row align-items-center justify-content-start trans_400">
+            <a href="#">
+              <div class="logo d-flex flex-row align-items-center justify-content-start">
+                <img src="assets/FrontOffice/images/dot.png" alt="" height="24" width="24">
+                <div>Sport<span>fit</span></div>
+              </div>
+            </a>
+            <nav class="main_nav">
+              <ul class="d-flex flex-row align-items-center justify-content-start">
+                  <li><a routerLink="/Index">Home</a></li>
+                  <li><a routerLink="/PlanningClient">Planning</a></li>
+                  <li><a routerLink="/FitnessProgression">Fitness_Progress</a></li>
+                  <li><a routerLink="/subscription-recommendation">Abonnements</a></li>
+                  <li><a routerLink="/ClientForm">plan_alimentaire</a></li>
+                <li><a routerLink="/Chatgpt">Assistant_Coachs</a></li>
+
+
+              </ul>
+            </nav>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hamburger -->
+  <div class="hamburger_bar trans_400 d-flex flex-row align-items-center justify-content-start">
+    <div class="hamburger">
+      <div class="menu_toggle d-flex flex-row align-items-center justify-content-start">
+        <span>menu</span>
+        <div class="hamburger_container">
+          <div class="menu_hamburger">
+            <div class="line_1 hamburger_lines" style="transform: matrix(1, 0, 0, 1, 0, 0);"></div>
+            <div class="line_2 hamburger_lines" style="visibility: inherit; opacity: 1;"></div>
+            <div class="line_3 hamburger_lines" style="transform: matrix(1, 0, 0, 1, 0, 0);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menu -->
+  <div class="menu trans_800">
+    <div class="menu_content d-flex flex-column align-items-center justify-content-center text-center">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About us</a></li>
+        <li><a href="services.html">Classes & Services</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="menu_phone d-flex flex-row align-items-center justify-content-start">
+      <i class="fa fa-phone" aria-hidden="true"></i>
+      <span>652-345 3222 11</span>
+    </div>
+  </div>
+
+  <!-- Home -->
+  <div class="home">
+    <div class="background_image" style="background-image:url(assets/FrontOffice/images/services.jpg)"></div>
+    <div class="overlay"></div>
+    <div class="home_container">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="home_content">
+              <div class="home_title">Services</div>
+              <div class="home_subtitle">Pilates, Yoga, Fitness, Spinning & many more</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Calendrier dynamique -->
+  <div class="calendar-section">
+    <div class="container">
+      <div class="calendar-header">
+        <h2>Planning des cours</h2>
+        <p>Consultez notre programme hebdomadaire et réservez votre séance</p>
+      </div>
+
+      <div class="calendar-container">
+        <!-- Contrôles de navigation -->
+        <div class="calendar-controls">
+          <button class="calendar-btn" (click)="previousWeek()">
+            <i class="fa fa-chevron-left"></i> Semaine précédente
+          </button>
+          <div class="current-week">{{ getCurrentWeekDisplay() }}</div>
+          <button class="calendar-btn" (click)="nextWeek()">
+            Semaine suivante <i class="fa fa-chevron-right"></i>
+          </button>
+        </div>
+
+        <!-- Grille du calendrier -->
+        <div class="calendar-wrapper" *ngIf="plannings.length > 0">
+          <!-- En-têtes des jours -->
+          <div class="calendar-weekdays">
+            <div class="weekday-header">Heure</div>
+            <div class="weekday">Lundi</div>
+            <div class="weekday">Mardi</div>
+            <div class="weekday">Mercredi</div>
+            <div class="weekday">Jeudi</div>
+            <div class="weekday">Vendredi</div>
+            <div class="weekday">Samedi</div>
+            <div class="weekday">Dimanche</div>
+          </div>
+
+          <!-- Corps du calendrier -->
+          <div class="calendar-grid">
+            <ng-container *ngFor="let timeSlot of timeSlots">
+              <!-- Créneau horaire -->
+              <div class="time-slot">{{ timeSlot }}</div>
+
+              <!-- Cellules pour chaque jour -->
+              <div class="calendar-cell"
+                   *ngFor="let dayIndex of [0,1,2,3,4,5,6]; let i = index">
+
+                <!-- Événements pour ce jour et ce créneau -->
+                <div *ngFor="let planning of getEventsForDayAndTime(i, timeSlot)"
+                     class="class-event {{ getEventColor(planning) }}"
+                     (click)="onEventClick(planning)">
+                  <div class="class-type">{{ planning.titre }}</div>
+                  <div class="class-time">
+                    {{ getEventDuration(planning.dateDebut, planning.dateFin) }}
+                  </div>
+                  <div class="class-instructor">
+                    {{ getCoachName(planning) }}
+                  </div>
+                </div>
+
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+        <!-- Message de chargement -->
+        <div *ngIf="plannings.length === 0" class="loading-message">
+          <p>Chargement des plannings...</p>
+        </div>
+
+        <!-- Message si pas de données -->
+        <div *ngIf="plannings.length > 0 && !hasEventsForCurrentWeek()" class="no-events-message">
+          <p>Aucun cours prévu pour cette semaine</p>
+        </div>
+
+        <!-- Légende -->
+        <div class="calendar-legend">
+          <div class="legend-title">Légende:</div>
+          <div class="legend-items">
+            <div class="legend-item">
+              <span class="legend-color yoga"></span>
+              <span>Yoga</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color pilates"></span>
+              <span>Pilates</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color fitness"></span>
+              <span>Fitness</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color spinning"></span>
+              <span>Spinning</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color cardio"></span>
+              <span>Cardio</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color musculation"></span>
+              <span>Musculation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CHATBOT EN POSITION FIXE -->
+<div class="chatbot-fixed-container">
+
+  <!-- Chatbot minimisé -->
+  <div *ngIf="!isChatbotVisible" class="chatbot-minimized" (click)="toggleChatbot()">
+    <div class="chatbot-icon">
+      <i class="fa fa-comments"></i>
+      <span *ngIf="unreadMessages > 0" class="notification-badge">{{ unreadMessages }}</span>
+    </div>
+    <span class="chatbot-label">Assistant SportFit</span>
+    <i class="fa fa-chevron-up"></i>
+  </div>
+
+  <!-- Chatbot ouvert -->
+  <div *ngIf="isChatbotVisible" class="chatbot-window" [class.minimized]="isChatbotMinimized">
+
+    <!-- Header du chatbot -->
+    <div class="chatbot-header">
+      <div class="chatbot-title">
+        <div class="chatbot-avatar">
+          <i class="fa fa-robot"></i>
+        </div>
+        <div class="chatbot-info">
+          <h4>CoachBot SportFit</h4>
+          <span class="status online">● En ligne</span>
+        </div>
+      </div>
+      <div class="chatbot-actions">
+        <button class="header-btn" (click)="minimizeChatbot()" *ngIf="!isChatbotMinimized">
+          <i class="fa fa-minus"></i>
+        </button>
+        <button class="header-btn" (click)="maximizeChatbot()" *ngIf="isChatbotMinimized">
+          <i class="fa fa-expand"></i>
+        </button>
+        <button class="header-btn" (click)="toggleChatbot()">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Corps du chatbot (caché quand minimisé) -->
+    <div *ngIf="!isChatbotMinimized" class="chatbot-body">
+
+      <!-- Messages -->
+      <div class="messages-container" #messagesContainer>
+        <div *ngFor="let msg of messages"
+             [class]="'message ' + msg.sender + '-message'">
+          <div class="message-content">
+            <div class="message-text">{{ msg.text }}</div>
+            <div class="message-time">{{ getCurrentTime() }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions rapides -->
+
+
+      <!-- Zone de saisie -->
+      <div class="input-container">
+        <div class="input-wrapper">
+
+          <input
+            [(ngModel)]="userMessage"
+            (keyup.enter)="sendMessage()"
+            placeholder="Écrivez un message..."
+            class="message-input"
+            autocomplete="off"
+          />
+
+          <button class="mic-btn" title="Dictée vocale bientôt">
+            <i class="fa fa-microphone"></i>
+          </button>
+
+          <button (click)="sendMessage()" class="send-btn" title="Envoyer">
+            <i class="fa fa-paper-plane"></i>
+          </button>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Chatbot minimisé - aperçu -->
+    <div *ngIf="isChatbotMinimized" class="chatbot-preview">
+      <div class="preview-message">
+        <i class="fa fa-comments"></i>
+        <span>{{ messages.length }} messages</span>
+      </div>
+      <button class="preview-btn" (click)="maximizeChatbot()">
+        Ouvrir
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  /* Styles existants du calendrier */
+  .calendar-section {
+    padding: 60px 0;
+    background-color: #f9f9f9;
+  }
+
+  .calendar-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .calendar-header h2 {
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .calendar-header p {
+    color: #666;
+    font-size: 16px;
+  }
+
+  .calendar-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .calendar-btn {
+    background-color: #ff3366;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+  }
+
+  .calendar-btn:hover {
+    background-color: #e62e5c;
+  }
+
+  .current-week {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .calendar-wrapper {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .calendar-weekdays {
+    display: grid;
+    grid-template-columns: 100px repeat(7, 1fr);
+    background-color: #333;
+    color: white;
+    font-weight: 600;
+  }
+
+  .weekday-header, .weekday {
+    padding: 15px 10px;
+    text-align: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .weekday:last-child {
+    border-right: none;
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: 100px repeat(7, 1fr);
+    grid-auto-rows: 80px;
+  }
+
+  .time-slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    font-weight: 500;
+    color: #666;
+  }
+
+  .calendar-cell {
+    border-bottom: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    padding: 5px;
+    position: relative;
+    min-height: 80px;
+  }
+
+  .calendar-cell:last-child {
+    border-right: none;
+  }
+
+  .class-event {
+    border-radius: 4px;
+    padding: 8px;
+    color: white;
+    font-size: 12px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .class-event:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .class-type {
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+
+  .class-time, .class-instructor {
+    font-size: 10px;
+    opacity: 0.9;
+  }
+
+  /* Couleurs pour les différents types de cours */
+  .yoga {
+    background-color: #4CAF50;
+  }
+
+  .pilates {
+    background-color: #2196F3;
+  }
+
+  .fitness {
+    background-color: #FF9800;
+  }
+
+  .spinning {
+    background-color: #9C27B0;
+  }
+
+  .cardio {
+    background-color: #FF5722;
+  }
+
+  .musculation {
+    background-color: #795548;
+  }
+
+  .calendar-legend {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .legend-title {
+    font-weight: 600;
+    margin-right: 15px;
+    color: #333;
+  }
+
+  .legend-items {
+    display: flex;
+    gap: 20px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .legend-color {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+  }
+
+  .loading-message {
+    text-align: center;
+    padding: 40px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  .loading-message p {
+    font-size: 18px;
+    color: #666;
+    margin: 0;
+  }
+
+  .no-events-message {
+    text-align: center;
+    padding: 40px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  .no-events-message p {
+    font-size: 18px;
+    color: #666;
+    margin: 0;
+  }
+
+  /* === STYLES CORRIGÉS DU CHATBOT FIXE === */
+  .chatbot-fixed-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  /* Chatbot minimisé */
+  .chatbot-minimized {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .chatbot-minimized:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(76, 175, 80, 0.4);
+  }
+
+  .chatbot-icon {
+    position: relative;
+    font-size: 20px;
+  }
+
+  .notification-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ff4757;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+
+  .chatbot-label {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  /* Chatbot window */
+  .chatbot-window {
+    width: 380px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .chatbot-window.minimized {
+    height: 60px;
+  }
+
+  /* Header */
+  .chatbot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+  }
+
+  .chatbot-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .chatbot-avatar {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  .chatbot-info h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .status {
+    font-size: 11px;
+    opacity: 0.8;
+  }
+
+  .status.online {
+    color: #7bed9f;
+  }
+
+  .chatbot-actions {
+    display: flex;
+    gap: 5px;
+  }
+
+  .header-btn {
+    background: none;
+    border: none;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .header-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Corps du chatbot */
+  .chatbot-body {
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+  }
+
+  /* Messages */
+  .messages-container {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .message {
+    display: flex;
+    max-width: 85%;
+  }
+
+  .user-message {
+    align-self: flex-end;
+  }
+
+  .bot-message {
+    align-self: flex-start;
+  }
+
+  .message-content {
+    padding: 12px 16px;
+    border-radius: 18px;
+    position: relative;
+    word-wrap: break-word;
+    white-space: pre-line;
+    line-height: 1.4;
+  }
+
+  .user-message .message-content {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border-bottom-right-radius: 5px;
+  }
+
+  .bot-message .message-content {
+    background: white;
+    color: #333;
+    border: 1px solid #e0e0e0;
+    border-bottom-left-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .message-time {
+    font-size: 10px;
+    opacity: 0.7;
+    margin-top: 5px;
+    text-align: right;
+  }
+  /* ✅ Zone de saisie moderne */
+  .input-container {
+    padding: 12px;
+    border-top: 1px solid #e0e0e0;
+    background: #ffffff;
+  }
+
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+    background: #f3f3f3;
+    border-radius: 30px;
+    padding: 8px 12px;
+    border: 1px solid #dcdcdc;
+  }
+
+  .message-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 10px;
+    font-size: 14px;
+    outline: none;
+    font-family: inherit;
+  }
+
+  .message-input::placeholder {
+    color: #777;
+    opacity: 0.7;
+  }
+
+  .mic-btn,
+  .send-btn {
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 6px;
+    margin-left: 6px;
+    transition: all .2s ease;
+  }
+
+  .mic-btn i {
+    color: #6c757d;
+  }
+
+  .send-btn i {
+    color: #4CAF50;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .mic-btn:hover i,
+  .send-btn:hover i {
+    transform: scale(1.18);
+  }
+
+  /* Focus glow effet */
+  .input-wrapper:focus-within {
+    border: 1px solid #4CAF50;
+    box-shadow: 0 0 6px rgba(76, 175, 80, 0.4);
+  }
+
+  /* Actions rap
+</style>
